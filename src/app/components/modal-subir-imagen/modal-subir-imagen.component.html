@@ -1,0 +1,56 @@
+<div
+  id="modalSubirImagen"
+  class="modal fade"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="modalSubirImagenLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalSubirImagenLabel">Subir Imagen</h5>
+        <button
+          type="button"
+          class="close custom-close-button"
+          (click)="cerrarModal()"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div
+            class="drag-drop-box"
+            (dragover)="onDragOver($event)"
+            (dragleave)="onDragLeave($event)"
+            (drop)="onDrop($event)"
+            (click)="abrirSelectorDeArchivos()"
+          >
+            <p *ngIf="!imagenSeleccionada">
+              Arrastra tu imagen aquí o haz clic para seleccionarla
+            </p>
+            <p *ngIf="imagenSeleccionada">
+              Imagen seleccionada: {{ imagenSeleccionada.name }}
+            </p>
+            <input
+              type="file"
+              id="imagen"
+              (change)="onFileSelected($event)"
+              class="form-control d-none"
+              #fileInput
+            />
+          </div>
+          <button
+            type="button"
+            class="btn btn-primary w-100"
+            (click)="subirImagen()"
+          >
+            Subir Imagen
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

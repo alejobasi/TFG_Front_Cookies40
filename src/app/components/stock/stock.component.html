@@ -1,0 +1,60 @@
+<body>
+  <div class="container mt-4">
+    <h2>Lista de Ingredientes</h2>
+    <table class="table table-striped table-bordered">
+      <thead class="table-dark">
+        <tr>
+          <th>ID</th>
+          <th>Nombre</th>
+          <th>Cantidad</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          *ngFor="
+            let ingrediente of ingredientes
+              | paginate : { itemsPerPage: 10, currentPage: page }
+          "
+        >
+          <td>{{ ingrediente.id }}</td>
+          <td>{{ ingrediente.nombre }}</td>
+          <td
+            [ngClass]="{
+              'cantidad-actualizada': esActualizado(ingrediente.id)
+            }"
+          >
+            {{ ingrediente.cantidad }}
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <pagination-controls
+      (pageChange)="page = $event"
+      class="d-flex justify-content-center"
+    ></pagination-controls>
+  </div>
+
+  <div *ngIf="ingredientes.length > 0" class="container mt-4">
+    <h3>Subir Archivo de Ingredientes</h3>
+    <form (ngSubmit)="envioFichero()" #fileForm="ngForm">
+      <div class="mb-3">
+        <label for="fileInput" class="form-label">Seleccionar archivo</label>
+        <input
+          type="file"
+          id="fileInput"
+          class="form-control"
+          (change)="cambioFichero($event)"
+          required
+        />
+      </div>
+      <button type="submit" class="btn btn-primary" [disabled]="!selectedFile">
+        Enviar
+      </button>
+    </form>
+  </div>
+
+  <div *ngIf="mostrarMensaje" class="alert alert-info mt-3" role="alert">
+    {{ mensaje }}
+  </div>
+</body>

@@ -1,0 +1,99 @@
+
+.navbar {
+  background-color: white;
+  color: #ff4aaa;
+  border-radius: 75px;
+  margin-top: 7px;
+
+}
+
+.offcanvas-header{
+  margin: 0 auto;
+}
+.header{
+  display: flex;
+  flex-direction: row;
+}
+
+.boton-header{
+  margin-top: 5%;
+  margin-right: 5%;
+  
+}
+
+nav ul li a {
+  color: #ff4aaa;
+  font-size: 1.6em;
+  font-weight: bold;
+}
+
+.offcanvas-body {
+  background: linear-gradient(0deg, #b31469 24%, #ffffff 100%);
+}
+
+.list-group-item a {
+  color: #ff4aaa;
+  font-size: 1.2em;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.nombre-galleta-carrito{
+  width: 50%;
+ 
+}
+
+.pedido{
+  margin: 0 auto;
+}
+
+.pedido button{
+  margin: 0 auto;
+  background-color: #ff4aaa;
+  color: white;
+  border-radius: 50px;
+  border: none;
+  padding: 10px 20px;
+  font-size: 1.2em;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.pedido button:hover{
+ font-weight: bold;
+ font-size: 1.25em;
+}
+.offcanvas-header{
+  justify-content: space-between;
+  width: 100%;
+}
+.offcanvas-header .bi{
+  color: #ff4aaa;
+  font-size: 1.6em;
+  cursor: pointer;
+}
+.menu-icon {
+  transition: transform 0.3s ease, color 0.3s ease;
+}
+
+.menu-icon.icon-highlight {
+  transform: scale(2.5); 
+  color: #ff4aaa; 
+}
+
+@keyframes blink {
+  0% {
+    background-color: #ff4aaa;
+  }
+  50% {
+    background-color: #ffffff; 
+  }
+  100% {
+    background-color: #ff4aaa; 
+  }
+}
+
+.menu-button.button-blink {
+  animation: blink 0.9s ease-in-out infinite;  
+ 
+}

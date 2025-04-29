@@ -1,0 +1,29 @@
+@import "bootstrap-icons/font/bootstrap-icons.css";
+
+/* You can add global styles to this file, and also import other style files */
+@font-face {
+  font-family: 'Fredoka Condensed';
+  src: url('assets/font/Fredoka_Condensed-SemiBold.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Inter';
+  src: url('assets/font/Inter_18pt-SemiBold.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+* {
+  font-family: 'Inter', sans-serif !important;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.desenfoque{
+  filter: blur(5px);
+  transition: filter 0.3s ease;
+}
+
+

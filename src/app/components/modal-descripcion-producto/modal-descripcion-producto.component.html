@@ -1,0 +1,51 @@
+<div
+  class="modal fade"
+  id="descripcionProductoModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="descripcionProductoModalLabel"
+  aria-hidden="true"
+  (click)="cerrarModalSiClicFuera($event)"
+>
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="descripcionProductoModalLabel">
+          {{ producto?.nombre }}
+        </h5>
+        <button
+          type="button"
+          class="close"
+          (click)="cerrarModal()"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <h5>{{ producto?.descripcion }}</h5>
+
+        <div>
+          <h3>INGREDIENTES</h3>
+          <ul>
+            <li *ngFor="let ingrediente of producto?.ingredientes">
+              {{ ingrediente.nombre }}
+            </li>
+          </ul>
+        </div>
+
+        <div class="precios">
+          <h5 *ngIf="producto?.precioOferta">
+            Precio:
+            <span class="precio-normal">{{ producto?.precio }} €</span>
+            <span class="precio-oferta">{{ producto?.precioOferta }} €</span>
+          </h5>
+          <h5 *ngIf="!producto?.precioOferta">
+            Precio:
+            <span class="precio">{{ producto?.precio }} €</span>
+          </h5>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

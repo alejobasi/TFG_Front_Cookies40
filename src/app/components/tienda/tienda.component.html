@@ -1,0 +1,109 @@
+<html>
+  <body>
+    <div class="menu-busqueda">
+      <!-- Barra de búsqueda -->
+      <div class="barra-busqueda">
+        <input
+          type="text"
+          placeholder="Buscar productos..."
+          [(ngModel)]="busqueda"
+        />
+        <i class="bi bi-search lupa-icon" (click)="filtrarProductos()"></i>
+      </div>
+
+      <!-- Selector de filtros -->
+      <div class="filtro">
+        <select
+          [(ngModel)]="filtroSeleccionado"
+          (change)="cambiarFiltro(filtroSeleccionado)"
+        >
+          <option value="">Todos</option>
+          <option value="nuevo">Nuevos</option>
+          <option value="oferta">En oferta</option>
+        </select>
+      </div>
+    </div>
+    <div class="contenido">
+      <div class="container">
+        <div class="row">
+          <div
+            *ngIf="productosFiltrados.length === 0"
+            class="col-12 text-center"
+          >
+            <h4 class="mensaje-sin-productos">No se encontraron productos.</h4>
+          </div>
+          <div
+            class="col-12 col-sm-6 col-md-4 mb-5"
+            *ngFor="let producto of productosFiltrados"
+          >
+            <div class="card">
+              <div
+                class="ribbon"
+                *ngIf="esNuevo(producto) && !producto.precioOferta"
+              >
+                <span>NUEVO</span>
+              </div>
+              <div class="ribbon oferta" *ngIf="producto.precioOferta">
+                <span>OFERTA</span>
+              </div>
+
+              <h5 class="card-title">{{ producto.nombre }}</h5>
+              <img
+                *ngIf="producto.imagen"
+                [src]="producto.imagen"
+                class="card-img-top"
+                alt="{{ producto.nombre }}"
+              />
+              <div class="card-body">
+                <span
+                  class="precio"
+                  [ngClass]="{ 'precio-oferta': producto.precioOferta }"
+                >
+                  {{
+                    producto.precioOferta
+                      ? producto.precioOferta
+                      : producto.precio
+                  }}
+                  €
+                </span>
+                <div class="icono-div">
+                  <i
+                    class="bi bi-eye"
+                    (click)="abrirDescripcion(producto)"
+                    data-toggle="modal"
+                    data-target="#descripcionModal"
+                  ></i>
+                </div>
+                <div class="icono-div">
+                  <i
+                    class="bi bi-cart-plus"
+                    (click)="anadirCarrito(producto)"
+                  ></i>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-12 text-center">
+          <button
+            class="btn btn-primary"
+            (click)="cargarSiguientePagina()"
+            [disabled]="paginaActual + 1 >= totalPaginas"
+          >
+            Siguiente
+          </button>
+        </div>
+
+        <div class="col-12 text-center">
+          <button class="btn btn-primary" routerLink="/crearGalleta">
+            Crear Galleta
+          </button>
+        </div>
+      </div>
+    </div>
+    <app-modal-descripcion-producto
+      #descripcionModal
+    ></app-modal-descripcion-producto>
+  </body>
+</html>

@@ -1,0 +1,46 @@
+<div class="container mt-4">
+  <h2>Lista de Usuarios</h2>
+  <table class="table table-striped table-bordered">
+    <thead class="table-dark">
+      <tr>
+        <th>ID</th>
+        <th>Nombre</th>
+        <th>Email</th>
+        <th>Rol</th>
+        <th></th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr
+        *ngFor="
+          let usuario of usuarios
+            | paginate : { itemsPerPage: 10, currentPage: page }
+        "
+      >
+        <td>{{ usuario.id }}</td>
+        <td>{{ usuario.nombre }}</td>
+        <td>{{ usuario.email }}</td>
+        <td>{{ usuario.rol.nombre }}</td>
+        <td class="iconos">
+          <i
+            class="bi bi-pencil-square"
+            (click)="abrirModalEditar(usuario)"
+          ></i>
+        </td>
+        <td class="iconos">
+          <i class="bi bi-trash" (click)="eliminarUsuario(usuario.id)"></i>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <pagination-controls
+    (pageChange)="page = $event"
+    class="d-flex justify-content-center"
+  ></pagination-controls>
+</div>
+<app-modal-editar-usuario
+  *ngIf="usuarioSeleccionado"
+  [usuario]="usuarioSeleccionado"
+></app-modal-editar-usuario>

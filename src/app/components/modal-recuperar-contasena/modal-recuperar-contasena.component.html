@@ -1,0 +1,57 @@
+<div
+  class="modal fade"
+  id="recuperarContrasenaModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="recuperarContrasenaModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="recuperarContrasenaModalLabel">
+          Recuperar Contraseña
+        </h5>
+        <button
+          type="button"
+          class="close"
+          (click)="modalLoginService.closeRecuperarContrasenaModal()"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="formularioRecuperar" (ngSubmit)="enviarCorreo()">
+          <div class="form-group">
+            <label for="correo">Correo Electrónico:</label>
+            <input
+              type="email"
+              class="form-control"
+              id="correo"
+              formControlName="correo"
+              required
+            />
+            <div
+              *ngIf="
+                formularioRecuperar.get('correo')?.invalid &&
+                formularioRecuperar.get('correo')?.touched
+              "
+              class="text-danger"
+            >
+              <div
+                *ngIf="formularioRecuperar.get('correo')?.errors?.['required']"
+              >
+                El correo es requerido.
+              </div>
+              <div *ngIf="formularioRecuperar.get('correo')?.errors?.['email']">
+                Formato de correo no válido.
+              </div>
+            </div>
+          </div>
+          <button type="submit" class="btn btn-primary">Enviar</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

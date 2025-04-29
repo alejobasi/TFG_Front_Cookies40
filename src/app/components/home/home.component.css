@@ -1,0 +1,165 @@
+.theme {
+  --brown: #8b4513;
+  --light-brown: #d2b48c;
+  --pink: #f8c8dc;
+  --dark-pink: #e6a4b4;
+  --white: #ffffff;
+}
+
+body {
+  font-family: 'Arial', sans-serif;
+  margin: 0;
+  padding: 0;
+  background: linear-gradient(0deg, var(--pink) 30%, var(--white) 100%);
+  overflow-x: hidden; 
+  overflow-y: hidden;
+}
+
+.home-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 100vh;
+  width: 103vw;
+  padding: 2rem;
+  overflow-x: hidden; 
+  overflow-y: hidden;
+}
+
+.text-content {
+  max-width: 50%;
+}
+
+.main-title {
+  font-size: 4rem;
+  font-weight: bold;
+  color: var(--brown);
+  margin: 0;
+}
+
+.main-title span {
+  color: var(--dark-pink);
+}
+
+.subtitle {
+  font-size: 1.5rem;
+  color: var(--brown);
+  margin: 1rem 0;
+  line-height: 1.8;
+}
+
+
+.action-button {
+  display: inline-block;
+  margin-top: 1rem;
+  padding: 1rem 2rem;
+  font-size: 1.5rem;
+  color: var(--white);
+  background: var(--dark-pink);
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background 0.3s ease;
+}
+
+.action-button:hover {
+  background: var(--pink);
+}
+/* Contenedor de la imagen */
+.image-content {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden; 
+}
+
+
+.circle-decorator {
+  position: absolute;
+  bottom: -130px;
+  right: -150px;
+  width: 750px;
+  height: 750px;
+  background: radial-gradient(
+    circle,
+    rgb(250, 6, 107) 0%,
+    rgba(248, 200, 220, 0) 70%
+  );
+  border-radius: 50%;
+  z-index: 1;
+  pointer-events: none;
+  animation: pulse 3s infinite; /* Aplica la animación */
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.featured-cookie {
+  width: 950px; 
+  position: absolute;
+  bottom: -200px; 
+  right: -290px; 
+  z-index: 2; 
+  transform: rotate(-10deg); 
+  transition: transform 0.3s ease-in-out;
+}
+
+.featured-cookie:hover {
+  transform: rotate(0deg) scale(1.1); 
+}
+
+@keyframes pulse-background {
+  0% {
+    background: radial-gradient(circle, rgba(250, 6, 107, 0.5) 0%, rgba(248, 200, 220, 0) 70%);
+  }
+  50% {
+    background: radial-gradient(circle, rgba(250, 6, 107, 0.8) 30%, rgba(248, 200, 220, 0) 100%);
+  }
+  100% {
+    background: radial-gradient(circle, rgba(250, 6, 107, 0.5) 0%, rgba(248, 200, 220, 0) 70%);
+  }
+}
+
+.pulse-effect {
+  animation: pulse-background 1s ease-in-out;
+}
+
+@media (max-width: 768px) {
+  .home-container {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .text-content {
+    max-width: 100%;
+  }
+
+  .main-title {
+    font-size: 3rem;
+  }
+
+  .subtitle {
+    font-size: 1.2rem;
+  }
+
+  .featured-cookie {
+    width: 250px;
+    position: static;
+    margin-top: 2rem;
+  }
+
+  
+}

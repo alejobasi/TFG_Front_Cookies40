@@ -1,0 +1,25 @@
+<body>
+  <div class="home-container theme">
+    <!-- Título principal -->
+    <div class="text-content">
+      <h1 class="main-title">
+        No es solo una Galleta, es <span>Cookies40</span>
+      </h1>
+      <p class="subtitle">
+        Descubre nuestras deliciosas galletas personalizadas. ¡Crea tu propia
+        combinación perfecta y disfruta de un sabor único!
+      </p>
+      <a routerLink="/crearGalleta" class="action-button">¡Empieza ahora!</a>
+    </div>
+
+    <div class="image-content">
+      <div class="circle-decorator"></div>
+      <img
+        src="../../../assets/images/cookies/galletaChocolate.png"
+        alt="Galleta personalizada"
+        class="featured-cookie"
+        (click)="pulso()"
+      />
+    </div>
+  </div>
+</body>

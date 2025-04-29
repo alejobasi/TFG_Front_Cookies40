@@ -1,0 +1,55 @@
+.modal-content {
+    border-radius: 15px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  }
+  
+  .modal-header {
+    background-color: #fc60e2;
+    color: #ffffff;
+    border-bottom: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .modal-header .custom-close-button {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: #ffffff;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+  }
+  
+  .modal-header .custom-close-button:hover {
+    transform: scale(1.2);
+  }
+  
+  .modal-body {
+    padding: 1.5rem;
+  }
+  
+  .list-group-item {
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+  
+  .list-group-item:hover {
+    background-color: #f8f9fa;
+  }
+  
+  .list-group-item.active {
+    background-color: #fc60e2;
+    color: #ffffff;
+    border-color: #fc60e2;
+  }
+  
+  .btn-primary {
+    background-color: #fc60e2;
+    border-color: #fc60e2;
+  }
+  
+  .btn-primary:hover {
+    background-color: #e055c7;
+    border-color: #e055c7;
+  }

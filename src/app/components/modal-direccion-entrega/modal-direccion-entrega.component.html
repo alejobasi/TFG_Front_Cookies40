@@ -1,0 +1,103 @@
+<div
+  id="modalDireccionEntrega"
+  class="modal fade"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="modalDireccionEntregaLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalDireccionEntregaLabel">
+          Dirección de Entrega
+        </h5>
+        <button
+          type="button"
+          class="close custom-close-button"
+          (click)="cerrarModal()"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form (ngSubmit)="guardarNuevaDireccion()">
+          <h6 class="mb-3">Añadir Nueva Dirección</h6>
+          <div class="mb-3">
+            <label for="calle">Calle:</label>
+            <input
+              id="calle"
+              [(ngModel)]="nuevaDireccion.calle"
+              name="calle"
+              class="form-control"
+              required
+            />
+          </div>
+          <div class="mb-3">
+            <label for="numero">Número:</label>
+            <input
+              id="numero"
+              type="number"
+              [(ngModel)]="nuevaDireccion.numero"
+              name="numero"
+              class="form-control"
+              required
+            />
+          </div>
+          <div class="mb-3">
+            <label for="piso">Piso:</label>
+            <input
+              id="piso"
+              [(ngModel)]="nuevaDireccion.piso"
+              name="piso"
+              class="form-control"
+            />
+          </div>
+          <div class="mb-3">
+            <label for="telefono">Teléfono:</label>
+            <input
+              id="telefono"
+              [(ngModel)]="nuevaDireccion.telefono"
+              name="telefono"
+              class="form-control"
+              required
+            />
+          </div>
+          <button type="submit" class="btn btn-primary w-100">
+            Guardar Nueva Dirección
+          </button>
+        </form>
+
+        <hr />
+
+        <!-- Lista de direcciones guardadas -->
+        <h6 class="mb-3">Seleccionar Dirección Guardada</h6>
+        <div class="list-group">
+          <button
+            *ngFor="let direccion of direccionesGuardadas"
+            type="button"
+            class="list-group-item list-group-item-action"
+            [class.active]="direccion === direccionSeleccionada"
+            (click)="direccionSeleccionada = direccion"
+          >
+            {{ direccion.calle }}, {{ direccion.numero }} - {{ direccion.piso }}
+          </button>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-secondary" (click)="cerrarModal()">
+          Cerrar
+        </button>
+        <button
+          class="btn btn-primary"
+          [disabled]="!direccionSeleccionada"
+          (click)="confirmarDireccion()"
+        >
+          Confirmar Dirección
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

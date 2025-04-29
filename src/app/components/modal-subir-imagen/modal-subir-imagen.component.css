@@ -1,0 +1,17 @@
+.drag-drop-box {
+    border: 2px dashed #fc60e2;
+    border-radius: 10px;
+    padding: 20px;
+    text-align: center;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .drag-drop-box:hover {
+    background-color: #f8f9fa;
+  }
+  
+  .drag-drop-box.drag-over {
+    background-color: #fc60e2;
+    color: #ffffff;
+  }

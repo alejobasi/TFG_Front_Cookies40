@@ -1,0 +1,133 @@
+/* General del modal */
+.modal-content {
+    border-radius: 1rem; /* Bordes redondeados */
+    box-shadow: 0 0.5rem 1.25rem rgba(0, 0, 0, 0.2); /* Sombra */
+    max-width: 90%; /* Ancho máximo del modal */
+    margin: auto; /* Centrar el modal */
+  }
+  
+  .modal-header {
+    background-color: #fc60e2;
+    color: #ffffff;
+    border-bottom: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+
+  .modal-header .custom-close-button {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: #ffffff;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+  }
+  
+  .modal-header .custom-close-button:hover {
+    transform: scale(1.2);
+  }
+  
+  .modal-body {
+    padding: 1.5rem;
+    display: flex;
+    flex-wrap: wrap; 
+    gap: 1rem;
+  }
+  
+
+  .col-left,
+  .col-right {
+    flex: 1 1 45%; 
+    min-width: 300px; 
+  }
+  
+  .col-right {
+    max-height: 60vh; 
+    overflow-y: auto;
+  }
+  
+
+  .list-group-item {
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    justify-content: space-between;
+  }
+  
+  .list-group-item:hover {
+    background-color: #f8f9fa;
+  }
+  
+  .list-group-item.active {
+    background-color: #fc60e2;
+    color: #ffffff;
+    border-color: #fc60e2;
+  }
+  
+  /* Botones */
+  .btn-primary {
+    background-color: #fc60e2;
+    border-color: #fc60e2;
+  }
+  
+  .btn-primary:hover {
+    background-color: #e055c7;
+    border-color: #e055c7;
+  }
+  
+  .btn-secondary {
+    background-color: #6c757d;
+    border-color: #6c757d;
+  }
+  
+  .btn-secondary:hover {
+    background-color: #5a6268;
+    border-color: #545b62;
+  }
+  
+
+  .pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 1rem;
+  }
+  
+  .pagination-controls {
+    margin-top: 1rem;
+  }
+  
+  .pagination .page-item.active .page-link {
+    background-color: #fc60e2;
+    border-color: #fc60e2;
+    color: #ffffff;
+  }
+  
+  .pagination .page-link {
+    color: #fc60e2;
+    border: 1px solid #fc60e2;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+  
+  .pagination .page-link:hover {
+    background-color: #e055c7;
+    color: #ffffff;
+    border-color: #e055c7;
+  }
+  
+ 
+@media (max-width: 768px) {
+    .modal-body {
+        flex-direction: column;
+    }
+
+    .col-left,
+    .col-right {
+        flex: 1 1 100%;
+        min-width: auto;
+    }
+
+    .col-right {
+        max-height: 40vh;
+    }
+}

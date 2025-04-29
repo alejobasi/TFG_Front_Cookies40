@@ -1,0 +1,143 @@
+<body>
+  <nav class="navbar navbar-expand-lg">
+    <div class="container-fluid">
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav w-100 d-flex justify-content-between">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="#">Home</a>
+          </li>
+          <li class="nav-item">
+            <a routerLink="/tienda" class="nav-link active" aria-current="page"
+              >Tienda</a
+            >
+          </li>
+          <li class="nav-item">
+            <img
+              src="assets/images/image.png"
+              alt="Logo"
+              width="110"
+              height="52"
+              class="d-inline-block align-text-top"
+            />
+          </li>
+        </ul>
+        <button
+          class="btn btn-outline-secondary menu-button"
+          type="button"
+          data-bs-toggle="offcanvas"
+          data-bs-target="#offcanvasRight"
+          aria-controls="offcanvasRight"
+        >
+          <i class="bi bi-list menu-icon"></i>
+        </button>
+      </div>
+    </div>
+  </nav>
+</body>
+<div
+  class="offcanvas offcanvas-end"
+  tabindex="-1"
+  id="offcanvasRight"
+  aria-labelledby="offcanvasRightLabel"
+>
+  <div class="header">
+    <div class="offcanvas-header">
+      <i class="bi bi-gear" (click)="abrirModalEdicion()"></i>
+      <h5
+        class="offcanvas-title"
+        id="offcanvasRightLabel"
+        *ngIf="!estaLogueado()"
+      >
+        Menu
+      </h5>
+      <h5
+        class="offcanvas-title"
+        id="offcanvasRightLabel"
+        *ngIf="estaLogueado()"
+      >
+        Menu {{ usuario?.nombre }}
+      </h5>
+      <i
+        *ngIf="estaLogueado()"
+        class="bi bi-box-arrow-right"
+        (click)="cerrarSesion()"
+      ></i>
+      <i
+        *ngIf="!estaLogueado()"
+        class="bi bi-person-circle"
+        (click)="abrirModal()"
+      ></i>
+    </div>
+    <div class="boton-header">
+      <button
+        type="button"
+        class="btn-close text-reset"
+        data-bs-dismiss="offcanvas"
+        aria-label="Close"
+      ></button>
+    </div>
+  </div>
+  <div class="offcanvas-body">
+    <ul class="list-group">
+      <li class="list-group-item">
+        <h5>Carrito</h5>
+        <div *ngIf="carrito == null || carrito.length == 0">
+          <p class="text-center">No hay productos en el carrito</p>
+        </div>
+        <ul class="list-group">
+          <li
+            class="list-group-item d-flex align-items-center"
+            *ngFor="let item of carrito"
+          >
+            <img
+              *ngIf="item.producto.imagen"
+              [src]="item.producto.imagen"
+              alt="{{ item.producto.nombre }}"
+              class="img-thumbnail me-3"
+              style="width: 75px; height: 75px"
+            />
+            <div class="nombre-galleta-carrito">
+              <span class="flex-grow-1">{{ item.producto.nombre }}</span>
+            </div>
+            <div class="d-flex align-items-center">
+              <button
+                class="btn btn-outline-secondary btn-sm me-2"
+                (click)="quitarProductoAlCarrito(item.producto)"
+              >
+                -
+              </button>
+              <span>{{ item.cantidad }}</span>
+              <button
+                class="btn btn-outline-secondary btn-sm ms-2"
+                (click)="anadirProductoAlCarrito(item.producto)"
+              >
+                +
+              </button>
+            </div>
+          </li>
+        </ul>
+
+        <div
+          class="d-flex justify-content-between mt-3"
+          *ngIf="carrito != null && carrito.length > 0"
+        >
+          <span>Total:</span>
+          <span>{{ totalCarrito() }} €</span>
+        </div>
+
+        <div class="pedido" *ngIf="carrito != null && carrito.length > 0">
+          <button
+            class="btn btn-primary mt-3"
+            (click)="abrirModalDireccionEntrega()"
+          >
+            Realizar Pedido
+          </button>
+        </div>
+      </li>
+    </ul>
+  </div>
+</div>
+<app-modal-editar-usuario
+  *ngIf="usuarioSeleccionado"
+  [usuario]="usuarioSeleccionado"
+></app-modal-editar-usuario>

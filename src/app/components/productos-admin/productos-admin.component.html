@@ -1,0 +1,68 @@
+<body>
+  <div class="container mt-4">
+    <h2>Lista de Productos</h2>
+    <table class="table table-striped table-bordered">
+      <thead class="table-dark">
+        <tr>
+          <th>ID</th>
+          <th>Nombre</th>
+          <th>Descripción</th>
+          <th>Precio</th>
+          <th>Familia</th>
+          <th>Ingrdientes</th>
+          <th>En Venta</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          *ngFor="
+            let producto of productos
+              | paginate : { itemsPerPage: 10, currentPage: page }
+          "
+        >
+          <td>{{ producto.id }}</td>
+          <td>{{ producto.nombre }}</td>
+          <td>
+            {{ producto.descripcion }}
+          </td>
+          <td>
+            {{ producto.precio }} €
+            <span *ngIf="producto.precioOferta" class="text-danger">
+              (Oferta: {{ producto.precioOferta }} €)
+            </span>
+          </td>
+          <td>
+            <span
+              *ngFor="let ingrediente of producto.ingredientes; let i = index"
+            >
+              {{ ingrediente.nombre }}
+            </span>
+          </td>
+          <td>{{ producto.familia?.nombre }}</td>
+          <td *ngIf="producto.descatalogado">
+            <i class="bi bi-x-circle-fill text-danger"></i>
+          </td>
+          <td *ngIf="!producto.descatalogado">
+            <i class="bi bi-check-circle-fill text-success"></i>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <pagination-controls
+      (pageChange)="page = $event"
+      class="d-flex justify-content-center"
+    ></pagination-controls>
+  </div>
+
+  <div class="d-flex justify-content-center mt-4">
+    <button class="btn btn-primary" (click)="irAFormulario()">
+      Añadir Producto
+    </button>
+  </div>
+
+  <app-modal-crear-producto
+    [familias]="familias"
+    [ingredientes]="ingredientes"
+  ></app-modal-crear-producto>
+</body>

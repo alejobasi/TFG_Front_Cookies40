@@ -1,0 +1,152 @@
+<div
+  class="modal fade"
+  id="registroModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="loginModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content modal-custom-size">
+      <div class="modal-header">
+        <h5 class="modal-title" id="loginModalLabel">Registrarse</h5>
+        <button
+          type="button"
+          class="close custom-close-button"
+          (click)="modalLoginService.closeRegistroModal()"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="formularioRegistro" (ngSubmit)="registrarse()">
+          <div class="form-group">
+            <label for="nombre">Nombre:</label>
+            <input
+              type="text"
+              class="form-control"
+              id="nombre"
+              formControlName="nombre"
+              required
+            />
+            <div
+              *ngIf="
+                formularioRegistro.get('nombre')?.invalid &&
+                formularioRegistro.get('nombre')?.touched
+              "
+              class="text-danger"
+            >
+              Nombre es requerido.
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="email">Email:</label>
+            <input
+              type="email"
+              class="form-control"
+              id="email"
+              formControlName="email"
+              required
+            />
+            <div
+              *ngIf="
+                formularioRegistro.get('email')?.invalid &&
+                formularioRegistro.get('email')?.touched
+              "
+              class="text-danger"
+            >
+              <div
+                *ngIf="formularioRegistro.get('email')?.errors?.['required']"
+              >
+                Email es requerido.
+              </div>
+              <div *ngIf="formularioRegistro.get('email')?.errors?.['email']">
+                Formato de email no válido.
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="contrasena">Contraseña:</label>
+            <div class="input-group">
+              <input
+                type="password"
+                class="form-control"
+                id="contrasenaRegistro"
+                formControlName="contrasena"
+                required
+              />
+              <div class="input-group-append">
+                <button
+                  type="button"
+                  class="btn btn-outline-secondary"
+                  (click)="verContrasena('contrasenaRegistro')"
+                >
+                  <i class="bi bi-eye"></i>
+                </button>
+              </div>
+            </div>
+            <div
+              *ngIf="
+                formularioRegistro.get('contrasena')?.invalid &&
+                formularioRegistro.get('contrasena')?.touched
+              "
+              class="text-danger"
+            >
+              <div
+                *ngIf="formularioRegistro.get('contrasena')?.errors?.['required']"
+              >
+                Contraseña es requerida.
+              </div>
+              <div
+                *ngIf="formularioRegistro.get('contrasena')?.errors?.['minlength']"
+              >
+                Contraseña debe tener al menos 6 caracteres.
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="confirmPassword">Confirmar Contraseña:</label>
+            <div class="input-group">
+              <input
+                type="password"
+                class="form-control"
+                id="confirmPassword"
+                formControlName="confirmPassword"
+                required
+              />
+              <div class="input-group-append">
+                <button
+                  type="button"
+                  class="btn btn-outline-secondary"
+                  (click)="verContrasena('confirmPassword')"
+                >
+                  <i class="bi bi-eye"></i>
+                </button>
+              </div>
+            </div>
+            <div
+              *ngIf="
+                formularioRegistro.get('confirmPassword')?.invalid &&
+                formularioRegistro.get('confirmPassword')?.touched
+              "
+              class="text-danger"
+            >
+              <div
+                *ngIf="formularioRegistro.get('confirmPassword')?.errors?.['required']"
+              >
+                Confirmar contraseña es requerida.
+              </div>
+              <div
+                *ngIf="formularioRegistro.get('confirmPassword')?.errors?.['minlength']"
+              >
+                Confirmar contraseña debe tener al menos 6 caracteres.
+              </div>
+            </div>
+          </div>
+          <button type="submit" class="btn btn-primary">Registrarse</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

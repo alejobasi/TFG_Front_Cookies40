@@ -1,0 +1,22 @@
+
+.navbar {
+  background-color: white;
+  color: #ff4aaa;
+  border-radius: 75px;
+  margin-top: 7px;
+
+}
+
+nav ul li a {
+  color: black;
+  font-size: 1.6em;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+nav ul li img{
+  cursor: pointer;
+}
+.offcanvas-body {
+  background: linear-gradient(0deg, #b31469 24%, #ffffff 100%);
+}

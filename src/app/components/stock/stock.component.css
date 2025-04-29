@@ -1,0 +1,51 @@
+body {
+  height: 100vh;
+  background: linear-gradient(0deg, #b56328 24%, #ffffff 100%);
+}
+table {
+    border-collapse: collapse;
+    width: 100%;
+  }
+  
+  th, td {
+    text-align: left;
+    padding: 8px;
+  }
+  
+  th {
+    background-color: #8a4b1e;
+    color: white;
+  }
+  
+  tr:nth-child(even) {
+    background-color: #f2f2f2;
+  }
+  
+  .pagination-controls {
+    margin-top: 20px;
+  }
+
+  .alert {
+    margin: 0 auto;
+    z-index: 1050;
+    max-width: 25%;
+    text-align: center;
+  }
+  .cantidad-actualizada {
+    animation: resaltar 2s ease-in-out;
+  }
+  
+  @keyframes resaltar {
+    0% {
+      background-color: rgb(9, 187, 9);
+      color: white;
+    }
+    50% {
+      background-color: rgb(55, 231, 158);
+      color: white;
+    }
+    100% {
+      background-color: rgb(9, 187, 9);
+      color: white;
+    }
+  }

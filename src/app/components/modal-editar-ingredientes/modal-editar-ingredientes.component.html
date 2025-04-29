@@ -1,0 +1,53 @@
+<div
+  id="modalEditarIngredientes"
+  class="modal fade"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="modalEditarIngredientesLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalEditarIngredientesLabel">
+          Editar Ingredientes
+        </h5>
+        <button
+          type="button"
+          class="close custom-close-button"
+          (click)="cerrarModal()"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form *ngIf="producto && producto.ingredientes">
+          <div *ngFor="let ingrediente of producto.ingredientes" class="mb-3">
+            <label for="cantidad_{{ ingrediente.id }}" class="form-label">
+              {{ ingrediente.nombre }}
+            </label>
+            <input
+              id="cantidad_{{ ingrediente.id }}"
+              type="number"
+              [(ngModel)]="ingrediente.cantidad"
+              name="cantidad_{{ ingrediente.id }}"
+              class="form-control"
+              min="0.01"
+              step="0.01"
+            />
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button
+          class="btn btn-primary"
+          type="button"
+          (click)="guardarCambios()"
+        >
+          Guardar Cambios
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

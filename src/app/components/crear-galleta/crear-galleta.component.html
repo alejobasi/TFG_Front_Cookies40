@@ -1,0 +1,32 @@
+<div class="crear-galleta-container">
+  <!-- Columna izquierda: Base de la galleta -->
+  <div class="columna-galleta">
+    <div class="galleta-base">
+      <img
+        src="assets/images/cookies/BaseGalleta.png"
+        alt="Base de la galleta"
+      />
+      <div class="ingredientes-sobre-galleta">
+        <img
+          *ngFor="let ingrediente of ingredientesSobreGalleta"
+          [src]="ingrediente.imagen"
+          [style.top.px]="ingrediente.posicionY"
+          [style.left.px]="ingrediente.posicionX"
+          class="ingrediente"
+        />
+      </div>
+    </div>
+  </div>
+
+  <!-- Columna derecha: Lista de ingredientes -->
+  <div class="columna-ingredientes">
+    <div
+      class="ingrediente-lista"
+      *ngFor="let ingrediente of ingredientes; let i = index"
+      (click)="agregarIngrediente(i)"
+    >
+      <img [src]="ingrediente.imagen" [alt]="ingrediente.nombre" />
+      <p>{{ ingrediente.nombre }}</p>
+    </div>
+  </div>
+</div>

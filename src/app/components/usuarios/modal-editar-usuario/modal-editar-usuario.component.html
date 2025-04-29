@@ -1,0 +1,111 @@
+<div
+  id="modalEditarUsuario"
+  class="modal fade"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="modalEditarUsuarioLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalEditarUsuarioLabel">Editar Usuario</h5>
+        <button
+          type="button"
+          class="close custom-close-button"
+          (click)="cerrarModal()"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="usuarioForm">
+          <div class="mb-3">
+            <label for="nombre" class="form-label">Nombre:</label>
+            <input
+              id="nombre"
+              formControlName="nombre"
+              class="form-control"
+              [class.is-invalid]="
+                usuarioForm.get('nombre')?.invalid &&
+                usuarioForm.get('nombre')?.touched
+              "
+            />
+            <div
+              class="invalid-feedback"
+              *ngIf="
+                usuarioForm.get('nombre')?.invalid &&
+                usuarioForm.get('nombre')?.touched
+              "
+            >
+              El nombre es obligatorio.
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="contrasena" class="form-label">Contraseña:</label>
+            <input
+              id="contrasena"
+              type="text"
+              formControlName="contrasena"
+              class="form-control"
+              [class.is-invalid]="
+                usuarioForm.get('contrasena')?.invalid &&
+                usuarioForm.get('contrasena')?.touched
+              "
+            />
+            <div
+              class="invalid-feedback"
+              *ngIf="
+                usuarioForm.get('contrasena')?.invalid &&
+                usuarioForm.get('contrasena')?.touched
+              "
+            >
+              La contraseña no es valida.
+            </div>
+            <small class="form-text text-muted">
+              Si quieres cambiar la contraseña, rellena este campo. Si no,
+              déjalo vacío.
+            </small>
+          </div>
+          <div class="mb-3">
+            <label for="email" class="form-label">Email:</label>
+            <input
+              [disabled]="true"
+              id="email"
+              type="email"
+              formControlName="email"
+              class="form-control"
+              [class.is-invalid]="
+                usuarioForm.get('email')?.invalid &&
+                usuarioForm.get('email')?.touched
+              "
+            />
+            <div
+              class="invalid-feedback"
+              *ngIf="
+                usuarioForm.get('email')?.invalid &&
+                usuarioForm.get('email')?.touched
+              "
+            >
+              El email es obligatorio y debe ser válido.
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="cerrarModal()">
+          Cancelar
+        </button>
+        <button
+          type="button"
+          class="btn btn-primary"
+          [disabled]="usuarioForm.invalid"
+          (click)="guardarCambios()"
+        >
+          Guardar Cambios
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
