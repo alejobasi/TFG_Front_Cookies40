@@ -29,11 +29,28 @@ export class ProductoService {
     );
   }
 
-  buscarProductosConFiltros(nombre: string): Observable<Producto[]> {
-    return this.http.get<Producto[]>(
-      `${this.api}/buscar/${nombre}`,
+  buscarProductosPorIngredientes(
+    ids: number[],
+    page: number,
+    tamano: number
+  ): Observable<any> {
+    const params = ids.map((id) => `idsIngredientes=${id}`).join('&');
+    return this.http.get<any>(
+      `${this.api}/porIngrediente?page=${page}&tamano=${tamano}&${params}`,
       this.https
     );
+  }
+
+  buscarProductosOfertados(page: number, tamano: number): Observable<any> {
+    return this.http.get<any>(`${this.api}/oferta`, this.https);
+  }
+
+  buscarProductosNuevos(page: number, tamano: number): Observable<any> {
+    return this.http.get<any>(`${this.api}/nuevos`, this.https);
+  }
+
+  buscarProductosConFiltros(nombre: string): Observable<any> {
+    return this.http.get<any>(`${this.api}/buscar/${nombre}`, this.https);
   }
   getFamilias(): Observable<Familia[]> {
     const sesion = localStorage.getItem('sesion');
@@ -73,6 +90,22 @@ export class ProductoService {
       `${this.api}/imagenProducto/${productoId}`,
       formData,
       { headers }
+    );
+  }
+
+  descatalogar(id: number): Observable<any> {
+    const sesion = localStorage.getItem('sesion');
+    const token = sesion ? JSON.parse(sesion).token : null;
+
+    const headers = {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    };
+    const options = { headers };
+    return this.http.put<any>(
+      `${this.api}/descatalogar/${id}`,
+      { id },
+      options
     );
   }
 }

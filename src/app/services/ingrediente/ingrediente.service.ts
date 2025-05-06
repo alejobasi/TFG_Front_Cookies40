@@ -22,6 +22,16 @@ export class IngredienteService {
     return this.http.get<Ingrediente[]>(this.api, { headers });
   }
 
+  getIngredientesPorProductos(id: number): Observable<Ingrediente[]> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+    });
+
+    return this.http.get<Ingrediente[]>(`${this.api}/productos/${id}`, {
+      headers,
+    });
+  }
+
   actualizarIngredientes(selectedFile: File) {
     const sesion = localStorage.getItem('sesion');
     const token = sesion ? JSON.parse(sesion).token : null;

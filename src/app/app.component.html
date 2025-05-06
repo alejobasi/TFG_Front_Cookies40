@@ -1,6 +1,8 @@
 <app-nav *ngIf="!esAdmin"></app-nav>
 <app-nav-admin *ngIf="esAdmin"></app-nav-admin>
-<router-outlet></router-outlet>
+<main>
+  <router-outlet></router-outlet>
+</main>
 <app-modal-login></app-modal-login>
 <app-modal-registro></app-modal-registro>
 <app-modal-recuperar-contasena></app-modal-recuperar-contasena>

@@ -1,12 +1,29 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectorRef, Component, NgModule, OnInit } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  NgModule,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { IngredienteService } from '../../services/ingrediente/ingrediente.service';
 import { FormsModule } from '@angular/forms';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { MatSort, MatSortModule } from '@angular/material/sort';
+import { Ingrediente } from '../../models/Ingrediente';
 
 @Component({
   selector: 'app-stock',
-  imports: [CommonModule, NgxPaginationModule, FormsModule],
+  imports: [
+    CommonModule,
+    NgxPaginationModule,
+    FormsModule,
+    MatTableModule,
+    MatPaginatorModule,
+    MatSortModule,
+  ],
   templateUrl: './stock.component.html',
   styleUrl: './stock.component.css',
 })
@@ -15,6 +32,13 @@ export class StockComponent implements OnInit {
     private ingredienteService: IngredienteService,
     private cdr: ChangeDetectorRef
   ) {}
+
+  displayedColumns: string[] = ['id', 'nombre', 'cantidad'];
+  dataSource = new MatTableDataSource<Ingrediente>();
+
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild(MatSort) sort!: MatSort;
+
   ingredientes: any[] = [];
   ingredientesPrevios: any[] = [];
   page: number = 1;
@@ -26,12 +50,24 @@ export class StockComponent implements OnInit {
     this.ingredienteService.getIngredientes().subscribe({
       next: (data) => {
         this.ingredientes = data;
+        this.dataSource.data = this.ingredientes;
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
         console.log('Ingredientes obtenidos:', this.ingredientes);
       },
       error: (error) => {
         console.error('Error al obtener ingredientes:', error);
       },
     });
+  }
+
+  applyFilter(event: Event): void {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
+    }
   }
 
   cambioFichero(event: Event): void {

@@ -3,13 +3,11 @@ import { BehaviorSubject } from 'rxjs';
 import { UsuarioService } from '../usuario/usuario.service';
 import { jwtDecode } from 'jwt-decode';
 
-
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ComprobacionAdminService {
-
-  private esAdminSubject = new BehaviorSubject<boolean>(false); 
+  private esAdminSubject = new BehaviorSubject<boolean>(false);
   esAdmin$ = this.esAdminSubject.asObservable();
 
   constructor(private usuarioService: UsuarioService) {
@@ -20,16 +18,13 @@ export class ComprobacionAdminService {
     const sesion = localStorage.getItem('sesion');
 
     if (sesion) {
-      
       try {
         const token = JSON.parse(sesion).token;
         const decodedToken: any = jwtDecode(token);
         const email = decodedToken?.sub;
 
-        
         this.usuarioService.comprobarRolAdmin(email).subscribe(
           (rol) => {
-            console.log('Rol del usuario:', rol);
             this.esAdminSubject.next(rol === 2); // Suponiendo que el rol de admin tiene ID 2
           },
           (error) => {
@@ -52,6 +47,6 @@ export class ComprobacionAdminService {
 
   cerrarSesion() {
     localStorage.removeItem('sesion');
-    this.esAdminSubject.next(false); 
+    this.esAdminSubject.next(false);
   }
 }

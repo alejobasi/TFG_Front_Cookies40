@@ -1,6 +1,16 @@
 <html>
   <body>
     <div class="menu-busqueda">
+      <div class="filtro">
+        <select
+          [(ngModel)]="filtroSeleccionado"
+          (change)="cambiarFiltro(filtroSeleccionado)"
+        >
+          <option value="">Todos</option>
+          <option value="nuevo">Nuevos</option>
+          <option value="oferta">En oferta</option>
+        </select>
+      </div>
       <!-- Barra de búsqueda -->
       <div class="barra-busqueda">
         <input
@@ -11,16 +21,13 @@
         <i class="bi bi-search lupa-icon" (click)="filtrarProductos()"></i>
       </div>
 
-      <!-- Selector de filtros -->
       <div class="filtro">
-        <select
-          [(ngModel)]="filtroSeleccionado"
-          (change)="cambiarFiltro(filtroSeleccionado)"
+        <button
+          class="btn-filtrar-ingredientes"
+          (click)="abrirModalFiltrarIngredientes()"
         >
-          <option value="">Todos</option>
-          <option value="nuevo">Nuevos</option>
-          <option value="oferta">En oferta</option>
-        </select>
+          Filtrar por Ingredientes
+        </button>
       </div>
     </div>
     <div class="contenido">
@@ -86,18 +93,28 @@
         </div>
 
         <div class="col-12 text-center">
-          <button
-            class="btn btn-primary"
-            (click)="cargarSiguientePagina()"
-            [disabled]="paginaActual + 1 >= totalPaginas"
-          >
-            Siguiente
+          <button class="btn btn-primary" routerLink="/crearGalleta">
+            Crear Galleta
           </button>
         </div>
 
-        <div class="col-12 text-center">
-          <button class="btn btn-primary" routerLink="/crearGalleta">
-            Crear Galleta
+        <div class="col-12 text-center navegacion-paginacion">
+          <button
+            class="btn-navegacion"
+            (click)="cargarPaginaAnterior()"
+            [disabled]="paginaActual === 0"
+          >
+            <i class="bi bi-arrow-left"></i>
+          </button>
+          <button
+            class="btn-navegacion"
+            (click)="cargarSiguientePagina()"
+            [disabled]="
+              paginaActual + 1 >= totalPaginas ||
+              productosFiltrados.length < tamanioPagina
+            "
+          >
+            <i class="bi bi-arrow-right"></i>
           </button>
         </div>
       </div>
@@ -105,5 +122,9 @@
     <app-modal-descripcion-producto
       #descripcionModal
     ></app-modal-descripcion-producto>
+    <app-modal-filtrar-por-ingrediente
+      [ingredientes]="ingredientes"
+      (seleccionConfirmada)="filtrarProductosPorIngredientes($event)"
+    ></app-modal-filtrar-por-ingrediente>
   </body>
 </html>

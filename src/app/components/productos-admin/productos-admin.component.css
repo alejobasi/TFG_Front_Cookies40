@@ -1,0 +1,7 @@
+.bi{
+    font-size: 1.3rem;
+    cursor: pointer;
+}
+.bi:hover{
+    scale: 1.4;
+}

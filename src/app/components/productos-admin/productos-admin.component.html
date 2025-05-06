@@ -8,8 +8,8 @@
           <th>Nombre</th>
           <th>Descripción</th>
           <th>Precio</th>
-          <th>Familia</th>
           <th>Ingrdientes</th>
+          <th>Familia</th>
           <th>En Venta</th>
         </tr>
       </thead>
@@ -39,10 +39,16 @@
             </span>
           </td>
           <td>{{ producto.familia?.nombre }}</td>
-          <td *ngIf="producto.descatalogado">
+          <td
+            *ngIf="producto.descatalogado"
+            (click)="descatalogar(producto.id)"
+          >
             <i class="bi bi-x-circle-fill text-danger"></i>
           </td>
-          <td *ngIf="!producto.descatalogado">
+          <td
+            *ngIf="!producto.descatalogado"
+            (click)="descatalogar(producto.id)"
+          >
             <i class="bi bi-check-circle-fill text-success"></i>
           </td>
         </tr>

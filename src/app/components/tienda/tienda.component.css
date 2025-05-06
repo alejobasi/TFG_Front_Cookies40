@@ -2,33 +2,125 @@ body {
   width: 100vw;
   height: 100vh;
   margin: 0;
-  background: linear-gradient(0deg, #b31469 24%, #ffffff 100%);
+  background: radial-gradient(circle, #fff5f5 60%, #e6a4b4 100%);
+  font-family: 'Arial', sans-serif; /* Fuente limpia y moderna */
+  color: #333; /* Color de texto oscuro para buena legibilidad */
 }
 
-/* menú busqueda */
+
+.filtro {
+  
+  display: flex;
+  align-items: center;
+  margin-right: 1rem;
+}
+
+
+.filtro select {
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  font-weight: bold;
+  color: #333; 
+  background: linear-gradient(45deg, #ffffff, #f8f9fa);
+  border: 2px solid #ff78c4; 
+  border-radius: 10px; 
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+  transition: all 0.3s ease;
+  cursor: pointer;
+  appearance: none; 
+}
+
+
+.filtro select:hover,
+.filtro select:focus {
+  background: linear-gradient(45deg, #ff78c4, #ff4aaa); 
+  color: #fff; 
+  border-color: #ff4aaa;
+  outline: none;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+
+.filtro select option {
+  background: #ffffff; 
+  color: #333;
+  padding: 0.5rem;
+}
+
+/* Responsividad */
+@media (max-width: 768px) {
+  .filtro select {
+    font-size: 0.9rem;
+    padding: 0.4rem 0.8rem;
+  }
+}
 .menu-busqueda {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 1rem;
-  background-color: #f8f9fa;
+  background: radial-gradient(circle, #fff5f5 75%, #e6a4b4 100%);
   border-bottom: 1px solid #ddd;
   margin-bottom: 1rem;
 }
-
+/* Contenedor de la barra de búsqueda */
 .barra-busqueda {
   position: relative;
   display: flex;
   align-items: center;
-  overflow: hidden;
+  justify-content: center;
+  margin: 1rem 0;
+  width: 100%;
+  max-width: 500px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
+/* Input de búsqueda */
 .barra-busqueda input {
-  padding: 0.5rem;
+  width: 100%;
+  padding: 0.8rem 1rem;
   font-size: 1rem;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  width: 300px;
+  border: 2px solid #ff78c4;
+  border-radius: 50px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+/* Hover y focus del input */
+.barra-busqueda input:hover,
+.barra-busqueda input:focus {
+  border-color: #ff4aaa;
+  outline: none;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* Icono de búsqueda */
+.barra-busqueda .lupa-icon {
+  position: absolute;
+  right: 1rem;
+  font-size: 1.5rem;
+  color: #ff78c4;
+  cursor: pointer;
+  transition: transform 0.3s ease, color 0.3s ease;
+}
+
+/* Hover del icono */
+.barra-busqueda .lupa-icon:hover {
+  transform: scale(1.2);
+  color: #ff4aaa;
+}
+
+/* Responsividad */
+@media (max-width: 768px) {
+  .barra-busqueda input {
+    font-size: 0.9rem;
+    padding: 0.6rem 0.8rem;
+  }
+
+  .barra-busqueda .lupa-icon {
+    font-size: 1.2rem;
+  }
 }
 
 .lupa-icon {
@@ -44,6 +136,42 @@ body {
   transform: scale(1.2);
 }
 
+
+.btn-filtrar-ingredientes {
+  background: linear-gradient(45deg, #ff4aaa, #ff78c4);
+  color: #fff;
+  font-size: 1.2rem;
+  font-weight: bold;
+  padding: 0.8rem 1.5rem;
+  border: none;
+  border-radius: 50px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+
+.btn-filtrar-ingredientes:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+  background: linear-gradient(45deg, #ff78c4, #ff4aaa);
+}
+
+
+.btn-filtrar-ingredientes:active {
+  transform: translateY(1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+
+@media (max-width: 768px) {
+  .btn-filtrar-ingredientes {
+    font-size: 1rem;
+    padding: 0.6rem 1.2rem;
+  }
+}
+
 /* fin menú busqueda */
 
 .container {
@@ -54,7 +182,7 @@ body {
   text-align: center;
   background-color: #E0908D;
   border: 5px solid transparent;
-margin-top: 3%;
+  margin-top: 3%;
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   overflow: hidden;
@@ -277,4 +405,47 @@ margin-top: 3%;
   font-size: 1.9rem;
   color: #d80073;
   margin-top: 2rem;
+}
+
+/* Estilos para la navegación de paginación */
+.navegacion-paginacion {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 1rem;
+  overflow: hidden;
+}
+
+.btn-navegacion {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-size: 1rem;
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+  overflow: hidden;
+  background: linear-gradient(45deg, #ff4aaa, #ff78c4);
+}
+
+.btn-navegacion i {
+  font-size: 1.2rem;
+}
+
+.btn-navegacion:hover {
+  background-color: #ff78c4;
+  transform: scale(1.05);
+}
+
+/* Responsividad */
+@media (max-width: 768px) {
+  .btn-navegacion {
+    font-size: 0.9rem;
+    padding: 0.4rem 0.8rem;
+  }
+
+  .btn-navegacion i {
+    font-size: 1rem;
+  }
 }
