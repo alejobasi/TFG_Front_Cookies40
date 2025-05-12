@@ -9,7 +9,7 @@ import { environment } from '../../../environments/environment';
   providedIn: 'root',
 })
 export class PedidoService {
-  private api = `${environment.apiUrl}/pedido`;
+  private api = `https://tfgbackcookies40-production.up.railway.app/pedido`;
 
   private https = {
     headers: {

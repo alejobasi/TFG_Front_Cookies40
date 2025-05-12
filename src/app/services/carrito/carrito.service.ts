@@ -8,7 +8,7 @@ import { environment } from '../../../environments/environment';
   providedIn: 'root',
 })
 export class CarritoService {
-  private api = `${environment.apiUrl}/carrito`;
+  private api = `https://tfgbackcookies40-production.up.railway.app/carrito`;
 
   constructor(private http: HttpClient) {}
 

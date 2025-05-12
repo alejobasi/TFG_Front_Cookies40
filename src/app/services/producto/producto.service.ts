@@ -9,7 +9,7 @@ import { environment } from '../../../environments/environment';
   providedIn: 'root',
 })
 export class ProductoService {
-  private api = `${environment.apiUrl}/productos`;
+  private api = `https://tfgbackcookies40-production.up.railway.app/productos`;
 
   private https = {
     headers: new HttpHeaders({

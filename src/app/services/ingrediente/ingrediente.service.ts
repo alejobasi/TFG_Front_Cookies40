@@ -8,7 +8,7 @@ import { environment } from '../../../environments/environment';
   providedIn: 'root',
 })
 export class IngredienteService {
-  private api = `${environment.apiUrl}/ingredientes`;
+  private api = `https://tfgbackcookies40-production.up.railway.app/ingredientes`;
 
   constructor(private http: HttpClient) {}
 
