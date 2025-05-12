@@ -3,13 +3,13 @@ import { Injectable } from '@angular/core';
 import { Pedido } from '../../models/Pedido';
 import { Observable } from 'rxjs';
 import { DatosEntrega } from '../../models/DatosEntrega';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class PedidoService {
-
-  private api = 'http://localhost:8080/pedido';
+  private api = `${environment.apiUrl}/pedido`;
 
   private https = {
     headers: {
@@ -17,18 +17,29 @@ export class PedidoService {
     },
   };
 
-  constructor(private http:HttpClient) { }
+  constructor(private http: HttpClient) {}
 
   realizarPedido(pedido: Pedido): Observable<any> {
     const sesion = localStorage.getItem('sesion');
     const token = sesion ? JSON.parse(sesion).token : null;
     const headers = {
       'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${token}`,
     };
     const options = { headers };
     return this.http.post(`${this.api}/crear`, pedido, options);
-    
+  }
+
+  getMisPedidos(): Observable<Pedido[]> {
+    const sesion = localStorage.getItem('sesion');
+    const token = sesion ? JSON.parse(sesion).token : null;
+    const idUsuario = sesion ? JSON.parse(sesion).usuario.id : null;
+    const headers = {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    };
+    const options = { headers };
+    return this.http.get<Pedido[]>(`${this.api}/${idUsuario}`, options);
   }
 
   getDatosEntrega(): Observable<DatosEntrega[]> {
@@ -37,10 +48,13 @@ export class PedidoService {
     const idUsuario = sesion ? JSON.parse(sesion).usuario.id : null;
     const headers = {
       'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${token}`,
     };
     const options = { headers };
-    return this.http.get<DatosEntrega[]>(`${this.api}/datosEntrega/${idUsuario}`, options);
+    return this.http.get<DatosEntrega[]>(
+      `${this.api}/datosEntrega/${idUsuario}`,
+      options
+    );
   }
 
   guardarDireccion(direccion: DatosEntrega): Observable<any> {
@@ -50,9 +64,13 @@ export class PedidoService {
     direccion.idUsuario = idUsuario;
     const headers = {
       'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${token}`,
     };
     const options = { headers };
-    return this.http.post(`${this.api}/guardarDatosEntrega`, direccion, options);
+    return this.http.post(
+      `${this.api}/guardarDatosEntrega`,
+      direccion,
+      options
+    );
   }
 }

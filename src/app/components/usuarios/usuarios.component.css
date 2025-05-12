@@ -18,3 +18,80 @@
 .bi-trash:hover{
     text-shadow: 2px 2px 5px #f03e3e;
 }
+
+@media (max-width: 1200px) {
+    .bi-pencil-square,
+    .bi-trash {
+      font-size: 1.2em; /* Reduce el tamaño de los íconos */
+    }
+  
+    .iconos {
+      padding: 5px; /* Reduce el espaciado */
+    }
+  
+    table {
+      font-size: 0.9em; /* Reduce el tamaño del texto en la tabla */
+    }
+  }
+
+  @media (max-width: 768px) {
+    .container {
+      padding: 0 10px; /* Reduce el padding del contenedor */
+    }
+  
+    table {
+      font-size: 0.8em; /* Reduce aún más el tamaño del texto */
+    }
+  
+    .iconos {
+      display: flex;
+      justify-content: center;
+      gap: 10px; /* Espaciado entre los íconos */
+    }
+  
+    .bi-pencil-square,
+    .bi-trash {
+      font-size: 1em; /* Reduce el tamaño de los íconos */
+    }
+  
+    th,
+    td {
+      white-space: nowrap; /* Evita que el texto se corte */
+      text-align: center;
+    }
+  }
+
+  @media (max-width: 576px) {
+    table {
+      display: block; /* Convierte la tabla en un diseño apilado */
+      width: 100%;
+      overflow-x: auto; /* Agrega scroll horizontal si es necesario */
+    }
+  
+    thead {
+      display: none; /* Oculta los encabezados de la tabla */
+    }
+  
+    tbody tr {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 1rem;
+      border: 1px solid #ddd;
+      padding: 10px;
+    }
+  
+    tbody td {
+      display: flex;
+      justify-content: space-between;
+      padding: 5px 0;
+    }
+  
+    .iconos {
+      justify-content: flex-end;
+    }
+  
+    .bi-pencil-square,
+    .bi-trash {
+      font-size: 0.9em; /* Ajusta el tamaño de los íconos */
+    }
+  }

@@ -1,16 +1,59 @@
-
 .navbar {
   background-color: white;
   color: #ff4aaa;
   border-radius: 75px;
   margin-top: 7px;
-  position: fixed; 
-  top: 0; 
-  left: 0; 
-  width: 100%; 
-  z-index: 1000; 
-  background-color: #ffffff; 
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: space-between ;
+  align-items: center;
+  padding: 0 15px;
+}
+
+.navbar-nav {
+  display: flex;
+  justify-content: space-between !important;
+  align-items: center;
+  width: 100%;
+  gap: 20px; /* Espaciado entre los elementos */
+}
+
+.navbar-nav .nav-item {
+  margin: 0 10px;
+}
+
+.navbar-nav .nav-link {
+  color: #ff4aaa;
+  font-size: 1.6em;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.navbar-nav .nav-link:hover {
+  color: #b31469;
+}
+
+.menu-button {
+  font-size: 1.2em;
+  margin-right: 10px;
+}
+
+.menu-icon {
+  font-size: 1.6em;
+  color: #ff4aaa;
+}
+
+.navbar-toggler {
+  border: none;
+}
+
+.navbar-toggler-icon {
+  color: #ff4aaa;
 }
 
 .offcanvas-header{
@@ -102,4 +145,99 @@ nav ul li a {
 .menu-button.button-blink {
   animation: blink 0.9s ease-in-out infinite;  
  
+}
+
+
+/* Estilos para pantallas menores a 768px */
+@media (max-width: 769px) {
+  .navbar {
+    flex-direction: column;
+    padding: 10px;
+    text-align: center;
+    border-radius: 0;
+    box-shadow: none;
+  }
+
+  .navbar .container-fluid {
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .container-fluid {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .navbar-nav {
+    flex-direction: column;
+    gap: 10px;
+    width: 100%; 
+  }
+
+  .navbar-nav .nav-item {
+   
+    text-align: center;
+  }
+
+  .menu-button,
+  .navbar-toggler {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+
+  .offcanvas-body {
+    padding: 10px;
+  }
+
+  .offcanvas-header {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .offcanvas-title {
+    font-size: 1.2em;
+    margin-bottom: 10px;
+  }
+
+  .cantidad{
+    flex-direction: row !important;
+  }
+
+  .list-group-item {
+    font-size: 1em;
+  }
+
+  .pedido button {
+    width: 100%;
+    font-size: 1em;
+    padding: 10px;
+  }
+
+  .nombre-galleta-carrito {
+    width: 100%;
+    text-align: center;
+    font-size: 1em;
+  }
+
+  .img-thumbnail {
+    width: 50px;
+    height: 50px;
+  }
+
+  .d-flex.align-items-center {
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  nav ul li a {
+    font-size: 1.4em;
+  }
+
+  .menu-icon {
+    font-size: 1.6em;
+  }
 }

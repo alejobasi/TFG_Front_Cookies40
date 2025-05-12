@@ -3,12 +3,13 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Producto } from '../../models/Producto';
 import { Familia } from '../../models/Familia';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ProductoService {
-  private api = 'http://localhost:8080/productos';
+  private api = `${environment.apiUrl}/productos`;
 
   private https = {
     headers: new HttpHeaders({

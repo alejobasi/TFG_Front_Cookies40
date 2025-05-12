@@ -56,4 +56,32 @@ export class CrearGalletaComponent implements OnInit {
       (ingrediente) => ![2, 3, 4, 5].includes(ingrediente.id)
     );
   }
+
+  eliminarIngredienteSobreGalleta(index: number): void {
+    // Recuperar el ingrediente antes de eliminarlo
+    const ingredienteEliminado = this.ingredientesSobreGalleta[index];
+
+    // Eliminar de la galleta
+    this.ingredientesSobreGalleta.splice(index, 1);
+
+    // Restar el precio
+    this.precioTotal -= 0.5;
+
+    // Devolver a la lista de ingredientes disponibles
+    this.ingredientes.push(
+      new Ingrediente(
+        ingredienteEliminado.id,
+        ingredienteEliminado.nombre,
+        ingredienteEliminado.imagen,
+        0
+      )
+    );
+
+    this.ingredientes.sort((a, b) => a.id - b.id);
+
+    console.log(
+      'Ingrediente eliminado de la galleta:',
+      ingredienteEliminado.nombre
+    );
+  }
 }

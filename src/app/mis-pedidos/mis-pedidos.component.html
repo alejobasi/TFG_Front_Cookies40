@@ -1,0 +1,128 @@
+<div class="container mt-5 pedidos-container">
+  <!-- Encabezado con nombre de usuario -->
+  <div class="header-section mb-4">
+    <h2 class="title">
+      Mis Pedidos <span class="user-name">{{ nombreUsuario }}</span>
+    </h2>
+  </div>
+
+  <!-- Cargando -->
+  <div *ngIf="cargando" class="loading-container">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Cargando...</span>
+    </div>
+    <p class="mt-2">Cargando tus pedidos...</p>
+  </div>
+
+  <!-- Mensaje cuando no hay pedidos -->
+  <div *ngIf="!cargando && pedidos.length === 0" class="no-pedidos">
+    <i class="bi bi-cart-x"></i>
+    <p>No tienes pedidos realizados</p>
+    <a routerLink="/tienda" class="btn btn-primary">Ir a comprar</a>
+  </div>
+
+  <div class="pedidos-list" *ngIf="!cargando && pedidos.length > 0">
+    <div class="card mb-3 pedido-card" *ngFor="let pedido of pedidos">
+      <div
+        class="card-header d-flex justify-content-between align-items-center"
+        (click)="togglePedido(pedido)"
+      >
+        <div>
+          <span class="pedido-id">Pedido #{{ pedido.id }}</span>
+          <span class="pedido-fecha">{{
+            pedido.fechaHora | date : "dd/MM/yyyy HH:mm"
+          }}</span>
+        </div>
+
+        <i
+          class="bi"
+          [ngClass]="pedido.expanded ? 'bi-chevron-up' : 'bi-chevron-down'"
+        ></i>
+      </div>
+      <div class="card-body" *ngIf="pedido.expanded">
+        <div class="row">
+          <!-- Columna de información general -->
+          <div class="col-md-6 mb-3">
+            <h5 class="mb-3">Información general</h5>
+            <p>
+              <strong>Total:</strong>
+              {{ pedido.total | currency : "EUR" : "symbol" : "1.2-2" }}
+            </p>
+
+            <p>
+              <strong>Fecha:</strong>
+              {{ pedido.fechaHora | date : "dd/MM/yyyy HH:mm" }}
+            </p>
+          </div>
+
+          <div class="col-md-6 mb-3">
+            <h5 class="mb-3">Dirección de entrega</h5>
+            <p *ngIf="pedido.datosEntrega">
+              {{ pedido.datosEntrega.calle }}, {{ pedido.datosEntrega.numero }}
+              <span *ngIf="pedido.datosEntrega.piso"
+                >, {{ pedido.datosEntrega.piso }}</span
+              >
+              <br />
+              <strong>Teléfono:</strong> {{ pedido.datosEntrega.telefono }}
+            </p>
+          </div>
+        </div>
+
+        <h5 class="mb-3">Productos</h5>
+        <div class="table-responsive">
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th>Producto</th>
+                <th class="text-center">Cantidad</th>
+                <th class="text-end">Precio</th>
+                <th class="text-end">Subtotal</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let producto of pedido.productos">
+                <td>
+                  <div class="producto-info">
+                    <img
+                      *ngIf="producto.imagen"
+                      [src]="producto.imagen"
+                      alt="Imagen producto"
+                      class="producto-imagen me-2"
+                    />
+                    {{ producto.nombre }}
+                  </div>
+                </td>
+                <td class="text-center">{{ producto.cantidad }}</td>
+                <td class="text-end">
+                  {{ producto.precio | currency : "EUR" : "symbol" : "1.2-2" }}
+                </td>
+                <td class="text-end">
+                  {{
+                    producto.subtotal | currency : "EUR" : "symbol" : "1.2-2"
+                  }}
+                </td>
+              </tr>
+              <tr class="total-row">
+                <td colspan="3" class="text-end"><strong>Total:</strong></td>
+                <td class="text-end">
+                  <strong>{{
+                    pedido.total | currency : "EUR" : "symbol" : "1.2-2"
+                  }}</strong>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="d-flex justify-content-end mt-3">
+          <button
+            class="btn btn-outline-primary"
+            (click)="descargarPedido(pedido)"
+          >
+            <i class="bi bi-download me-2"></i> Descargar pedido
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

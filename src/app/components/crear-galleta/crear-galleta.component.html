@@ -1,6 +1,6 @@
 <div class="crear-galleta-container">
-  <!-- Columna izquierda: Base de la galleta -->
-  <div class="columna-galleta">
+  <div class="galleta-seccion">
+    <!-- Base de la galleta -->
     <div class="galleta-base">
       <img
         src="assets/images/cookies/BaseGalleta.png"
@@ -16,9 +16,42 @@
         />
       </div>
     </div>
+
+    <!-- Panel de ingredientes añadidos (ahora debajo de la galleta) -->
+    <div class="panel-ingredientes">
+      <h4>Ingredientes añadidos</h4>
+      <div class="ingredientes-lista-panel">
+        <div
+          *ngFor="let ingrediente of ingredientesSobreGalleta; let i = index"
+          class="ingrediente-item"
+        >
+          <img
+            [src]="ingrediente.imagen"
+            [alt]="ingrediente.nombre"
+            class="ingrediente-miniatura"
+          />
+          <span class="ingrediente-nombre">{{ ingrediente.nombre }}</span>
+          <button
+            class="btn-eliminar"
+            (click)="eliminarIngredienteSobreGalleta(i)"
+          >
+            <i class="bi bi-x"></i>
+          </button>
+        </div>
+        <div
+          *ngIf="ingredientesSobreGalleta.length === 0"
+          class="no-ingredientes"
+        >
+          Aún no has añadido ingredientes
+        </div>
+      </div>
+      <div class="precio-total">
+        <span>Precio total: {{ precioTotal.toFixed(2) }} €</span>
+      </div>
+    </div>
   </div>
 
-  <!-- Columna derecha: Lista de ingredientes -->
+  <!-- Columna derecha: Lista de ingredientes disponibles -->
   <div class="columna-ingredientes">
     <div
       class="ingrediente-lista"

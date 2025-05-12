@@ -91,3 +91,249 @@
   font-size: 16px;
   text-align: center;
 }
+
+/* Panel de ingredientes añadidos */
+.panel-ingredientes {
+  margin-top: 20px;
+  border-radius: 12px;
+  background-color: white;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  padding: 15px;
+  width: 100%;
+  max-width: 700px;
+}
+
+.panel-ingredientes h4 {
+  color: #ff4aaa;
+  text-align: center;
+  margin-bottom: 15px;
+  font-weight: 600;
+}
+
+.ingredientes-lista-panel {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 15px;
+  max-height: 150px;
+  overflow-y: auto;
+  padding: 5px;
+}
+
+.ingrediente-item {
+  display: flex;
+  align-items: center;
+  background-color: #f8f9fa;
+  border-radius: 50px;
+  padding: 8px 12px;
+  position: relative;
+  transition: all 0.2s ease;
+  border: 1px solid #eee;
+}
+
+.ingrediente-item:hover {
+  background-color: #fff0f8;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(255, 74, 170, 0.2);
+}
+
+.ingrediente-miniatura {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 8px;
+}
+
+.ingrediente-nombre {
+  font-size: 0.9rem;
+  color: #333;
+}
+
+.btn-eliminar {
+  opacity: 0;
+  background: none;
+  border: none;
+  color: #ff4aaa;
+  font-size: 1.2rem;
+  cursor: pointer;
+  margin-left: 8px;
+  transition: all 0.2s ease;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ingrediente-item:hover .btn-eliminar {
+  opacity: 1;
+}
+
+.btn-eliminar:hover {
+  color: #e04098;
+  transform: scale(1.2);
+}
+
+.no-ingredientes {
+  width: 100%;
+  text-align: center;
+  color: #999;
+  padding: 15px;
+  font-style: italic;
+}
+
+.precio-total {
+  display: flex;
+  justify-content: flex-end;
+  padding-top: 10px;
+  border-top: 1px solid #eee;
+  font-weight: 600;
+  color: #ff4aaa;
+  font-size: 1.1rem;
+}
+
+/* Ajustes responsive */
+@media (max-width: 992px) {
+  .crear-galleta-container {
+    flex-direction: column;
+  }
+  
+  .columna-galleta {
+    margin-bottom: 20px;
+  }
+  
+  .panel-ingredientes {
+    max-width: 100%;
+  }
+}
+/* Pantallas pequeñas (menos de 726px) */
+@media (max-width: 726px) {
+  .galleta-base {
+    width: 450px;
+    height: 450px;
+  }
+  
+  .ingredientes-sobre-galleta  {
+top: 130px;
+    left: 130px;
+  }
+  .ingredientes-sobre-galleta img {
+    width: 300px;
+    height: 300px;
+  }
+  
+  .panel-ingredientes h4 {
+    font-size: 1.1rem;
+  }
+  
+  .ingrediente-nombre {
+    font-size: 0.8rem;
+  }
+  
+  .columna-ingredientes {
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  }
+  
+  .ingrediente-lista {
+    height: 140px;
+  }
+  
+  .ingrediente-lista img {
+    max-width: 120px;
+    max-height: 120px;
+  }
+  
+  .ingrediente-lista p {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 500px) {
+  .galleta-base {
+    width: 350px;
+    height: 350px; 
+  }
+    .ingredientes-sobre-galleta  {
+top: 172px;
+    left: 172px;
+  }
+  
+  .ingredientes-sobre-galleta img {
+    width: 200px;
+    height: 200px;
+  }
+  
+  .panel-ingredientes {
+    padding: 10px;
+  }
+  
+  .ingredientes-lista-panel {
+    max-height: 120px;
+  }
+  
+  .ingrediente-item {
+    padding: 5px 10px;
+  }
+  
+  .columna-ingredientes {
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: 10px;
+  }
+  
+  .ingrediente-lista {
+    height: 120px;
+  }
+  
+  .ingrediente-lista img {
+    max-width: 100px;
+    max-height: 100px;
+  }
+}
+
+@media (max-width: 400px) {
+  .galleta-base {
+    width: 280px;
+    height: 280px;
+  }
+      .ingredientes-sobre-galleta  {
+    top: 212px;
+    left: 209px;
+  }
+  
+  .galleta-seccion{
+overflow: hidden;
+  }
+
+  .ingredientes-sobre-galleta img {
+    width: 160px;
+    height: 160px;
+  }
+  
+  .panel-ingredientes h4 {
+    font-size: 1rem;
+    margin-bottom: 10px;
+  }
+  
+  .precio-total {
+    font-size: 0.9rem;
+  }
+  
+  .columna-ingredientes {
+    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+    gap: 8px;
+  }
+  
+  .ingrediente-lista {
+    height: 100px;
+  }
+  
+  .ingrediente-lista img {
+    max-width: 80px;
+    max-height: 80px;
+  }
+  
+  .ingrediente-lista p {
+    font-size: 12px;
+    margin-top: 4px;
+  }
+}
