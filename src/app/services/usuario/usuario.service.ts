@@ -8,7 +8,7 @@ import { environment } from '../../../environments/environment';
   providedIn: 'root',
 })
 export class UsuarioService {
-  private api = `https://tfgbackcookies40-production.up.railway.app/`;
+  private api = `https://tfgbackcookies40-production.up.railway.app`;
 
   private https = {
     headers: new HttpHeaders({
