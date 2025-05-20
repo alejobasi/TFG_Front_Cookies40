@@ -9,6 +9,7 @@ import {
 import { ProductoService } from '../../services/producto/producto.service';
 import Swal from 'sweetalert2';
 import { CommonModule } from '@angular/common';
+import { SupabaseService } from '../../services/supabase/supabase.service';
 
 @Component({
   selector: 'app-modal-subir-imagen',
@@ -22,7 +23,10 @@ export class ModalSubirImagenComponent {
   imagenSeleccionada!: File;
   @ViewChild('fileInput') fileInput!: ElementRef<HTMLInputElement>;
 
-  constructor(private productoService: ProductoService) {}
+  constructor(
+    private productoService: ProductoService,
+    private supabaseService: SupabaseService
+  ) {}
 
   onFileSelected(event: any): void {
     this.imagenSeleccionada = event.target.files[0];
@@ -52,20 +56,48 @@ export class ModalSubirImagenComponent {
   subirImagen(): void {
     console.log(this.imagenSeleccionada);
     if (this.imagenSeleccionada) {
-      this.productoService
-        .subirImagenProducto(this.productoId, this.imagenSeleccionada)
+      // Genera un nombre de archivo único usando el ID del producto y timestamp
+      const timestamp = new Date().getTime();
+      const filename = `producto_${this.productoId}_${timestamp}`;
+      const extension = this.imagenSeleccionada.name.split('.').pop();
+      const path = `${filename}.${extension}`;
+
+      // Sube a Supabase storage
+      this.supabaseService
+        .uploadImage('cookies40', path, this.imagenSeleccionada)
         .subscribe(
-          (response) => {
-            console.log('Imagen subida:', response);
-            Swal.fire({
-              icon: 'success',
-              title: 'Imagen subida correctamente',
-              text: 'La imagen se ha subido correctamente.',
-            });
+          (imageUrl) => {
+            console.log('Imagen subida a Supabase:', imageUrl);
+            this.productoService
+              .subirImagenProducto(this.productoId, imageUrl)
+              .subscribe(
+                (response) => {
+                  console.log('Imagen subida al producto:', response);
+                  Swal.fire({
+                    imageUrl: imageUrl,
+                    title: 'Imagen subida',
+                    text: 'La imagen se ha subido correctamente.',
+                  });
+                  this.imagenSubida.emit(imageUrl); // Emitir la URL de la imagen
+                },
+                (error) => {
+                  console.error('Error al subir la imagen al producto:', error);
+                  Swal.fire({
+                    icon: 'error',
+                    title: 'Error al subir la imagen',
+                    text: 'Ha ocurrido un error al subir la imagen al producto.',
+                  });
+                }
+              );
             this.cerrarModal();
           },
           (error) => {
-            console.error('Error al subir la imagen:', error);
+            console.error('Error al subir la imagen a Supabase:', error);
+            Swal.fire({
+              icon: 'error',
+              title: 'Error al subir la imagen',
+              text: 'Ha ocurrido un error al subir la imagen a Supabase.',
+            });
             this.cerrarModal();
           }
         );

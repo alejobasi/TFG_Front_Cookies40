@@ -144,6 +144,41 @@
           <span>{{ totalCarrito() }} €</span>
         </div>
 
+        <!-- Añadir esta sección para el descuento -->
+        <div
+          class="descuento-container mt-2 mb-2"
+          *ngIf="
+            tieneDescuentoDisponible() && carrito != null && carrito.length > 0
+          "
+        >
+          <div class="form-check">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              id="aplicarDescuento"
+              [(ngModel)]="descuentoAplicado"
+              (change)="calcularTotalConDescuento()"
+            />
+            <label class="form-check-label" for="aplicarDescuento">
+              Aplicar descuento {{ obtenerPorcentajeDescuento() }}%
+            </label>
+          </div>
+          <div *ngIf="descuentoAplicado" class="total-con-descuento">
+            <div class="d-flex justify-content-between">
+              <span>Subtotal:</span>
+              <span>{{ totalCarrito() }} €</span>
+            </div>
+            <div class="d-flex justify-content-between">
+              <span>Descuento:</span>
+              <span>-{{ calcularValorDescuento() }} €</span>
+            </div>
+            <div class="d-flex justify-content-between total-final">
+              <span>Total Final:</span>
+              <span>{{ totalConDescuento }} €</span>
+            </div>
+          </div>
+        </div>
+
         <div class="pedido" *ngIf="carrito != null && carrito.length > 0">
           <button
             class="btn btn-primary mt-3"
@@ -153,8 +188,11 @@
           </button>
         </div>
       </li>
-      <li class="list-group-item">
+      <li class="list-group-item pedidos">
         <h6 routerLink="/pedidos">Mis Pedidos</h6>
+      </li>
+      <li class="list-group-item pedidos">
+        <h6 routerLink="/sorteo">Ganar Descuentos!!</h6>
       </li>
     </ul>
   </div>

@@ -12,6 +12,7 @@ import { FormsModule } from '@angular/forms';
 import { IngredienteService } from '../../services/ingrediente/ingrediente.service';
 import { Ingrediente } from '../../models/Ingrediente';
 import { ModalFiltrarPorIngredienteComponent } from '../modal-filtrar-por-ingrediente/modal-filtrar-por-ingrediente.component';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-tienda',
@@ -148,32 +149,50 @@ export class TiendaComponent implements OnInit {
       const idProducto = producto.id;
       const cantidad = 1;
 
-      this.carritoServices
-        .anadirProducto(idUsuario, idProducto, cantidad)
-        .subscribe({
-          next: (data) => {
-            console.log('Producto añadido al carrito:', data);
+      // Primero verificamos el stock
+      this.carritoServices.verificarStock(idProducto).subscribe({
+        next: (response) => {
+          if (response) {
+            // Solo añadimos al carrito si hay stock
+            this.carritoServices
+              .anadirProducto(idUsuario, idProducto, cantidad)
+              .subscribe({
+                next: (data) => {
 
-            const menuIcon = document.querySelector('.menu-icon');
-            const menuButton = document.querySelector('.menu-button');
-            if (menuIcon && menuButton) {
-              menuIcon.classList.remove('bi-list');
-              menuIcon.classList.add('bi-cart');
-              menuButton.classList.add('button-blink');
+                  const menuIcon = document.querySelector('.menu-icon');
+                  const menuButton = document.querySelector('.menu-button');
+                  if (menuIcon && menuButton) {
+                    menuIcon.classList.remove('bi-list');
+                    menuIcon.classList.add('bi-cart');
+                    menuButton.classList.add('button-blink');
 
-              setTimeout(() => {
-                menuIcon.classList.remove('bi-cart');
-                menuIcon.classList.add('bi-list');
-                menuButton.classList.remove('button-blink');
-              }, 1000);
-            }
+                    setTimeout(() => {
+                      menuIcon.classList.remove('bi-cart');
+                      menuIcon.classList.add('bi-list');
+                      menuButton.classList.remove('button-blink');
+                    }, 1000);
+                  }
 
-            this.cargarCarrito();
-          },
-          error: (error) => {
-            console.error('Error al añadir producto al carrito:', error);
-          },
-        });
+                  this.cargarCarrito();
+                },
+                error: (error) => {
+                },
+              });
+          } else {
+            // Mostramos mensaje de error solo si no hay stock
+            Swal.fire({
+              icon: 'error',
+              title: 'Sin stock',
+              text: 'No hay stock disponible para este producto.',
+              showConfirmButton: false,
+              timer: 1500,
+              timerProgressBar: true,
+            });
+          }
+        },
+        error: (error) => {
+        },
+      });
     } else {
       this.modalLoginService.openModal();
     }

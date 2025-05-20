@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { Carrito } from '../../models/Carrito';
 import { environment } from '../../../environments/environment';
 
@@ -45,5 +45,18 @@ export class CarritoService {
     };
 
     return this.http.post(`${this.api}/agregar`, body, { headers });
+  }
+
+  verificarStock(idProducto: number): Observable<any> {
+    const sesion = localStorage.getItem('sesion');
+    const token = sesion ? JSON.parse(sesion).token : null;
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    });
+    return this.http.get<Carrito>(
+      `${this.api}/hayStockProducto/${idProducto}`,
+      { headers }
+    );
   }
 }

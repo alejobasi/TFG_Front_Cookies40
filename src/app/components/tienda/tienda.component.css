@@ -439,6 +439,79 @@ body {
   transform: scale(1.05);
 }
 
+.btn-crear-galleta {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 12px 28px;
+  margin: 25px auto;
+  font-size: 1.4rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #fff;
+  background: linear-gradient(135deg, #ff78c4, #ff4aaa);
+  border: none;
+  border-radius: 50px;
+  box-shadow: 0 6px 20px rgba(255, 74, 170, 0.4);
+  overflow: hidden;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  cursor: pointer;
+  z-index: 1;
+}
+
+.btn-crear-galleta::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #ff4aaa, #ff78c4);
+  opacity: 0;
+  z-index: -1;
+  transition: opacity 0.4s ease;
+}
+
+.btn-crear-galleta:hover {
+  transform: translateY(-5px) scale(1.05);
+  box-shadow: 0 10px 25px rgba(255, 74, 170, 0.6);
+}
+
+.btn-crear-galleta:hover::before {
+  opacity: 1;
+}
+
+.btn-crear-galleta:active {
+  transform: translateY(2px);
+  box-shadow: 0 3px 10px rgba(255, 74, 170, 0.4);
+}
+
+.btn-crear-galleta i {
+  font-size: 1.8rem;
+  animation: rotate 6s linear infinite;
+}
+
+@keyframes rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(10deg);
+  }
+  50% {
+    transform: rotate(0deg);
+  }
+  75% {
+    transform: rotate(-10deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
+}
+
 @media (max-width: 1200px) {
   
   .menu-busqueda {
@@ -513,7 +586,17 @@ body {
   .bi-eye {
     font-size: 1.5rem; 
   }
+ .btn-crear-galleta {
+    padding: 10px 22px;
+    font-size: 1.2rem;
+    gap: 8px;
+  }
+  
+  .btn-crear-galleta i {
+    font-size: 1.5rem;
+  }
 }
+
 @media (max-width: 400px) {
 .bi-cart-plus,
   .bi-eye {
@@ -524,5 +607,15 @@ body {
   }
   .card-body span{
     font-size: 0.8rem;
+  }
+  .btn-crear-galleta {
+    width: 90%;
+    max-width: 300px;
+    padding: 12px 20px;
+    font-size: 1.1rem;
+  }
+  
+  .btn-crear-galleta i {
+    font-size: 1.3rem;
   }
 }

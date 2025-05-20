@@ -111,19 +111,6 @@ export class ModalCrearProductoComponent implements OnInit {
   }
 
   abrirModalEditarIngredientes(): void {
-    this.producto = new Producto(
-      0, // ID temporal
-      this.productoForm.value.nombre,
-      this.productoForm.value.descripcion,
-      this.ingredientesSeleccionados,
-      this.productoForm.value.precio,
-      0, // precioOferta
-      new Date(), // fechaSalida
-      '', // imagen
-      this.familiaSeleccionada,
-      false // descatalogado
-    );
-
     const modal = document.getElementById('modalEditarIngredientes');
     if (modal) {
       modal.classList.add('show');

@@ -130,6 +130,11 @@ nav ul li a {
   color: #ff4aaa; 
 }
 
+.pedidos{
+  cursor:  pointer;
+  color: #ff4aaa;
+}
+
 @keyframes blink {
   0% {
     background-color: #ff4aaa;

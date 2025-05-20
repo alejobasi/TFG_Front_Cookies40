@@ -1,20 +1,32 @@
-import { Familia } from "./Familia";
-import { Ingrediente } from "./Ingrediente";
+import { Familia } from './Familia';
+import { Ingrediente } from './Ingrediente';
 
 export class Producto {
   id: number;
   nombre: string;
   descripcion: string;
-  descatalogado?: boolean ;
+  descatalogado?: boolean;
   ingredientes: Ingrediente[] | undefined;
   familia: Familia | undefined;
   precio: number;
   precioOferta?: number;
   fechaSalida?: Date;
   imagen: string;
+  personalizado: boolean;
 
-  constructor (id: number, nombre: string, descripcion: string,  ingredientes: Ingrediente[], precio: number,
-     precioOferta: number, fechaSalida: Date,  imagen: string, familia: Familia, descatalogado: boolean) {
+  constructor(
+    id: number,
+    nombre: string,
+    descripcion: string,
+    ingredientes: Ingrediente[],
+    precio: number,
+    precioOferta: number,
+    fechaSalida: Date,
+    imagen: string,
+    familia: Familia,
+    descatalogado: boolean,
+    personalizado: boolean
+  ) {
     this.id = id;
     this.nombre = nombre;
     this.descripcion = descripcion;
@@ -22,46 +34,46 @@ export class Producto {
     this.precio = precio;
     this.precioOferta = precioOferta;
     this.fechaSalida = fechaSalida;
-    this.imagen = imagen
+    this.imagen = imagen;
     this.familia = familia;
     this.descatalogado = descatalogado;
+    this.personalizado = personalizado;
   }
 
-  getNombre () {
+  getNombre() {
     return this.nombre;
   }
 
-  getId () {
+  getId() {
     return this.id;
   }
 
-  getPrecio () {
+  getPrecio() {
     return this.precio;
   }
 
-  getImagen () {
+  getImagen() {
     return this.imagen;
   }
 
-  getDescripcion () {
+  getDescripcion() {
     return this.descripcion;
   }
 
-  getIngredientes () {
+  getIngredientes() {
     return this.ingredientes;
   }
 
-  getPrecioOferta () {
+  getPrecioOferta() {
     return this.precioOferta;
   }
-  getFechaSalida () {
+  getFechaSalida() {
     return this.fechaSalida;
   }
-  getFamilia () {
+  getFamilia() {
     return this.familia;
   }
-  getDescatalogado () {
+  getDescatalogado() {
     return this.descatalogado;
   }
-
 }

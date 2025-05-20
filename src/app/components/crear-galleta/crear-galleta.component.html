@@ -49,6 +49,18 @@
         <span>Precio total: {{ precioTotal.toFixed(2) }} €</span>
       </div>
     </div>
+    <div>
+      <button
+        class="btn-guardar"
+        (click)="guardarGalleta()"
+        [disabled]="ingredientesSobreGalleta.length === 0"
+      >
+        Guardar galleta
+      </button>
+      <button class="btn-cancelar" (click)="cancelarCreacion()">
+        Cancelar
+      </button>
+    </div>
   </div>
 
   <!-- Columna derecha: Lista de ingredientes disponibles -->

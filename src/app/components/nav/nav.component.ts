@@ -12,11 +12,17 @@ import Swal from 'sweetalert2';
 import { PedidoComunicacionService } from '../../services/pedido-entrega-comunicacion/pedido-comunicacion-service.service';
 import { ModalEditarUsuarioComponent } from '../usuarios/modal-editar-usuario/modal-editar-usuario.component';
 import { Usuario } from '../../models/Usuario';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-nav',
   standalone: true,
-  imports: [RouterModule, CommonModule, ModalEditarUsuarioComponent],
+  imports: [
+    RouterModule,
+    CommonModule,
+    ModalEditarUsuarioComponent,
+    FormsModule,
+  ],
   templateUrl: './nav.component.html',
   styleUrl: './nav.component.css',
 })
@@ -24,6 +30,8 @@ export class NavComponent implements OnInit {
   usuario: any = null;
   carrito: any = null;
   usuarioSeleccionado!: Usuario;
+  descuentoAplicado: boolean = false;
+  totalConDescuento: string = '0.00';
   constructor(
     private usuarioService: UsuarioService,
     private modalLogin: ModalLoginService,
@@ -137,23 +145,142 @@ export class NavComponent implements OnInit {
   }
 
   abrirModalDireccionEntrega() {
-    const offcanvasElement = document.getElementById('offcanvasRight');
-    if (offcanvasElement) {
-      const offcanvasInstance = (window as any).bootstrap.Offcanvas.getInstance(
-        offcanvasElement
-      );
-      if (offcanvasInstance) {
-        offcanvasInstance.hide();
-      }
+    // Verificar que hay productos en el carrito
+    if (!this.carrito || this.carrito.length === 0) {
+      Swal.fire({
+        icon: 'warning',
+        title: 'Carrito vacío',
+        text: 'No tienes productos en el carrito',
+        showConfirmButton: false,
+        timer: 1500,
+        timerProgressBar: true,
+      });
+      return;
     }
 
-    const modal = document.getElementById('modalDireccionEntrega');
-    if (modal) {
-      modal.classList.add('show');
-      modal.style.display = 'block';
-      modal.setAttribute('aria-modal', 'true');
-      modal.removeAttribute('aria-hidden');
-      modal.focus();
+    // Array para almacenar productos sin stock
+    const productosSinStock: string[] = [];
+
+    // Contador para seguir el progreso de las verificaciones
+    let verificacionesCompletadas = 0;
+
+    // Para cada producto en el carrito, verificamos su stock
+    this.carrito.forEach((item: any) => {
+      this.carritoService.verificarStock(item.producto.id).subscribe({
+        next: (hayStock) => {
+          verificacionesCompletadas++;
+
+          // Si no hay stock, añadimos el producto a la lista
+          if (!hayStock) {
+            productosSinStock.push(item.producto.nombre);
+          }
+
+          // Si hemos verificado todos los productos, procedemos
+          if (verificacionesCompletadas === this.carrito.length) {
+            if (productosSinStock.length > 0) {
+              // Mostramos mensaje de error con los productos sin stock
+              Swal.fire({
+                icon: 'error',
+                title: 'Productos sin stock',
+                html: `<p>Los siguientes productos no tienen stock suficiente:</p>
+                    <ul>${productosSinStock
+                      .map((nombre) => `<li>${nombre}</li>`)
+                      .join('')}</ul>`,
+                confirmButtonText: 'Entendido',
+              });
+            } else {
+              // Si todos tienen stock, cerramos el offcanvas y abrimos el modal
+              const offcanvasElement =
+                document.getElementById('offcanvasRight');
+              if (offcanvasElement) {
+                const offcanvasInstance = (
+                  window as any
+                ).bootstrap.Offcanvas.getInstance(offcanvasElement);
+                if (offcanvasInstance) {
+                  offcanvasInstance.hide();
+                }
+              }
+
+              // Preparamos la lista de productos para pasar al modal
+              const productosParaPedido = this.carrito.map((item: any) => ({
+                producto: item.producto,
+                cantidad: item.cantidad,
+              }));
+
+              // En lugar de usar el servicio, guardamos en localStorage
+              localStorage.setItem(
+                'productosParaPedido',
+                JSON.stringify(productosParaPedido)
+              );
+
+              // Abrimos el modal de dirección de entrega
+              const modal = document.getElementById('modalDireccionEntrega');
+              if (modal) {
+                modal.classList.add('show');
+                modal.style.display = 'block';
+                modal.setAttribute('aria-modal', 'true');
+                modal.removeAttribute('aria-hidden');
+                modal.focus();
+              }
+            }
+          }
+        },
+        error: (error) => {
+          verificacionesCompletadas++;
+          console.error(
+            `Error al verificar stock del producto ${item.producto.nombre}:`,
+            error
+          );
+
+          // Si es el último, verificamos si podemos proceder
+          if (
+            verificacionesCompletadas === this.carrito.length &&
+            productosSinStock.length === 0
+          ) {
+            Swal.fire({
+              icon: 'error',
+              title: 'Error al verificar stock',
+              text: 'Hubo un problema al verificar el stock de algunos productos',
+              confirmButtonText: 'Intentar de nuevo',
+            });
+          }
+        },
+      });
+    });
+  }
+
+  tieneDescuentoDisponible(): boolean {
+    if (!this.usuario || !this.usuario.descuento) {
+      return false;
+    }
+    return true;
+  }
+
+  obtenerPorcentajeDescuento(): number {
+    if (this.tieneDescuentoDisponible()) {
+      return this.usuario.descuento.cantidad || 0;
+    }
+    return 0;
+  }
+
+  calcularValorDescuento(): string {
+    if (!this.descuentoAplicado) return '0.00';
+
+    const total = parseFloat(this.totalCarrito());
+    const porcentaje = this.obtenerPorcentajeDescuento();
+    const valorDescuento = (total * porcentaje) / 100;
+
+    return valorDescuento.toFixed(2);
+  }
+
+  calcularTotalConDescuento(): void {
+    const total = parseFloat(this.totalCarrito());
+
+    if (this.descuentoAplicado && this.tieneDescuentoDisponible()) {
+      const descuento = parseFloat(this.calcularValorDescuento());
+      this.totalConDescuento = (total - descuento).toFixed(2);
+    } else {
+      this.totalConDescuento = total.toFixed(2);
     }
   }
 
@@ -164,20 +291,43 @@ export class NavComponent implements OnInit {
       return;
     }
     const idUsuario = JSON.parse(sesion).usuario.id;
+
+    // Total final dependiendo de si aplica descuento o no
+    const totalFinal =
+      this.descuentoAplicado && this.tieneDescuentoDisponible()
+        ? parseFloat(this.totalConDescuento)
+        : parseFloat(this.totalCarrito());
+
     const pedido: Pedido = {
       idUsuario: idUsuario,
-      total: parseFloat(this.totalCarrito()),
+      total: totalFinal,
       productos: this.carrito.map((item: any) => ({
         idProducto: item.producto.id,
         cantidad: item.cantidad,
       })),
       idDatosEntrega: idDatosEntrega,
+      // Cambiar esto
+      descuento:
+        this.descuentoAplicado && this.tieneDescuentoDisponible()
+          ? { id: this.usuario.descuento.id }
+          : null,
     };
+
     console.log('Pedido:', pedido);
     this.pedidoService.realizarPedido(pedido).subscribe({
       next: (data) => {
         console.log('Pedido realizado:', data);
         this.carrito = null;
+
+        // Si aplicó descuento, actualizar el usuario para eliminar el descuento
+        if (this.descuentoAplicado && this.tieneDescuentoDisponible()) {
+          const sesionActual = JSON.parse(sesion);
+          sesionActual.usuario.descuento = null;
+          localStorage.setItem('sesion', JSON.stringify(sesionActual));
+          this.usuario = sesionActual.usuario;
+          this.descuentoAplicado = false;
+        }
+
         Swal.fire({
           title: 'Pedido realizado con éxito',
           imageAlt: 'cookies40',

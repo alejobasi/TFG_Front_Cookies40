@@ -10,20 +10,27 @@ import { PedidoComunicacionService } from '../../services/pedido-entrega-comunic
   selector: 'app-modal-direccion-entrega',
   imports: [FormsModule, CommonModule],
   templateUrl: './modal-direccion-entrega.component.html',
-  styleUrl: './modal-direccion-entrega.component.css'
+  styleUrl: './modal-direccion-entrega.component.css',
 })
 export class ModalDireccionEntregaComponent {
   direccionesGuardadas: DatosEntrega[] = [];
   direccionSeleccionada!: DatosEntrega;
   nuevaDireccion: DatosEntrega = new DatosEntrega();
+  productos: any[] = [];
 
-  constructor(private pedidoService: PedidoService, private  pedidoComunicacionService: PedidoComunicacionService) {}
+  constructor(
+    private pedidoService: PedidoService,
+    private pedidoComunicacionService: PedidoComunicacionService
+  ) {}
 
   ngOnInit(): void {
     if (this.estaLogueado()) {
       this.cargarDireccionesGuardadas();
     }
-   
+    const productosString = localStorage.getItem('productosParaPedido');
+    if (productosString) {
+      this.productos = JSON.parse(productosString);
+    }
   }
   estaLogueado() {
     const sesion = localStorage.getItem('sesion');
@@ -37,29 +44,37 @@ export class ModalDireccionEntregaComponent {
       },
       error: (err) => {
         console.error('Error al cargar direcciones guardadas:', err);
-      }
+      },
     });
   }
 
   guardarNuevaDireccion(): void {
     console.log('Guardando nueva dirección:', this.nuevaDireccion);
-    
+
     this.pedidoService.guardarDireccion(this.nuevaDireccion).subscribe({
       next: (response) => {
         console.log('Dirección guardada:', response);
-        this.cargarDireccionesGuardadas(); 
-        this.nuevaDireccion = new DatosEntrega(); 
+        this.cargarDireccionesGuardadas();
+        this.nuevaDireccion = new DatosEntrega();
       },
       error: (err) => {
         console.error('Error al guardar dirección:', err);
-      }
+      },
     });
   }
 
   confirmarDireccion(): void {
     if (this.direccionSeleccionada) {
       console.log('Dirección seleccionada:', this.direccionSeleccionada);
-      this.pedidoComunicacionService.triggerRealizarPedido(this.direccionSeleccionada.id!);
+
+      localStorage.setItem(
+        'productosSeleccionados',
+        JSON.stringify(this.productos)
+      );
+
+      this.pedidoComunicacionService.triggerRealizarPedido(
+        this.direccionSeleccionada.id!
+      );
     } else {
       console.error('No se ha seleccionado ninguna dirección');
     }

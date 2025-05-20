@@ -7,7 +7,8 @@ import { UsuariosComponent } from './components/usuarios/usuarios.component';
 import { Producto } from './models/Producto';
 import { ProductosAdminComponent } from './components/productos-admin/productos-admin.component';
 import { CrearGalletaComponent } from './components/crear-galleta/crear-galleta.component';
-import { MisPedidosComponent } from './mis-pedidos/mis-pedidos.component';
+import { MisPedidosComponent } from './components/mis-pedidos/mis-pedidos.component';
+import { SorteoDescuentoComponent } from './components/sorteo-descuento/sorteo-descuento.component';
 
 export const routes: Routes = [
   { path: 'home', component: HomeComponent },
@@ -18,5 +19,6 @@ export const routes: Routes = [
   { path: 'productos', component: ProductosAdminComponent },
   { path: 'crearGalleta', component: CrearGalletaComponent },
   { path: 'pedidos', component: MisPedidosComponent },
+  { path: 'sorteo', component: SorteoDescuentoComponent },
   { path: '**', redirectTo: 'home' },
 ];

@@ -23,6 +23,18 @@ export class ProductoService {
     return this.http.get<Producto[]>(this.api, this.https);
   }
 
+  getProducto(id: number): Observable<Producto> {
+    const sesion = localStorage.getItem('sesion');
+    const token = sesion ? JSON.parse(sesion).token : null;
+
+    const headers = {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    };
+    const options = { headers };
+    return this.http.get<Producto>(`${this.api}/${id}`, options);
+  }
+
   getProductosPaginados(page: number, size: number): Observable<any> {
     return this.http.get<any>(
       `${this.api}/paginados?page=${page}&size=${size}`,
@@ -76,20 +88,19 @@ export class ProductoService {
     return this.http.post<any>(this.api + '/crear', producto, options);
   }
 
-  subirImagenProducto(productoId: number, imagen: File): Observable<any> {
+  subirImagenProducto(productoId: number, imageUrl: string): Observable<any> {
     const sesion = localStorage.getItem('sesion');
     const token = sesion ? JSON.parse(sesion).token : null;
-    console.log(productoId, imagen);
+
     const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
       Authorization: `Bearer ${token}`,
     });
 
-    const formData = new FormData();
-    formData.append('imagen', imagen, imagen.name);
-
+    // Enviar la URL directamente como cuerpo de la solicitud
     return this.http.post<any>(
       `${this.api}/imagenProducto/${productoId}`,
-      formData,
+      imageUrl, // La URL va como cuerpo directamente
       { headers }
     );
   }
@@ -106,6 +117,25 @@ export class ProductoService {
     return this.http.put<any>(
       `${this.api}/descatalogar/${id}`,
       { id },
+      options
+    );
+  }
+
+  comprobarProducto(
+    ingredientesSobreGalleta: number[],
+    total: number
+  ): Observable<any> {
+    const sesion = localStorage.getItem('sesion');
+    const token = sesion ? JSON.parse(sesion).token : null;
+
+    const headers = {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    };
+    const options = { headers };
+    return this.http.post<any>(
+      `${this.api}/comprobarIngredientes/${total}`,
+      ingredientesSobreGalleta,
       options
     );
   }

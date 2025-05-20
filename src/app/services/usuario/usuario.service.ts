@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Usuario } from '../../models/Usuario';
 import { environment } from '../../../environments/environment';
+import { DescuentoFecha } from '../../models/DescuentoFecha';
 
 @Injectable({
   providedIn: 'root',
@@ -95,5 +96,41 @@ export class UsuarioService {
     return this.http.post<Usuario>(`${this.api}/actualizarUsuario`, usuario, {
       headers,
     });
+  }
+
+  asignarDescuentoUsuario(
+    idUsuario: number,
+    descuentoId: number
+  ): Observable<Usuario> {
+    const sesion = localStorage.getItem('sesion');
+    const token = sesion ? JSON.parse(sesion).token : null;
+
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    });
+
+    console.log('Enviando descuento ID:', descuentoId);
+
+    return this.http.post<Usuario>(
+      `${this.api}/usuario/descuento/${descuentoId}/${idUsuario}`,
+      null,
+      { headers }
+    );
+  }
+
+  getDescuentosUsuario(idUsuario: number): Observable<DescuentoFecha> {
+    const sesion = localStorage.getItem('sesion');
+    const token = sesion ? JSON.parse(sesion).token : null;
+
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    });
+
+    return this.http.get<DescuentoFecha>(
+      `${this.api}/usuario/descuento/${idUsuario}`,
+      { headers }
+    );
   }
 }
