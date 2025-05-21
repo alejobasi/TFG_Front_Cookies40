@@ -9,7 +9,7 @@ body {
 
 /* Contenedor principal */
 .container {
-  background: #b9b8b8;
+  background: #ffffff;
   border-radius: 12px;
   padding: 2rem;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
@@ -39,7 +39,7 @@ th, td {
 
 th {
   background-color: #ff78c4;
-  color: white;
+  color: rgb(0, 0, 0);
   font-weight: bold;
   text-transform: uppercase;
 }
@@ -54,7 +54,7 @@ tr:nth-child(even) td {
 }
 
 tr:hover td {
-  background-color: #ffe4e1;
+  background-color: #e4e4e4;
   cursor: pointer;
 }
 
@@ -85,7 +85,7 @@ form input[type="file"] {
 }
 
 form button {
-  background-color: #ff78c4;
+  background-color: #539dff;
   color: white;
   border: none;
   padding: 0.8rem 1.5rem;
@@ -96,7 +96,7 @@ form button {
 }
 
 form button:hover {
-  background-color: #ff4aaa;
+  background-color: #4a56ff;
   transform: scale(1.05);
 }
 
@@ -117,6 +117,7 @@ form button:disabled {
   font-weight: bold;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
+
 
 /* Responsividad */
 @media (max-width: 768px) {

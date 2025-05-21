@@ -6,6 +6,8 @@ import { Producto } from '../../models/Producto';
 import { ProductoService } from '../../services/producto/producto.service';
 import { Familia } from '../../models/Familia';
 import { CarritoService } from '../../services/carrito/carrito.service';
+import Swal from 'sweetalert2';
+import { Title } from '@angular/platform-browser';
 @Component({
   selector: 'app-crear-galleta',
   imports: [CommonModule],
@@ -131,6 +133,16 @@ export class CrearGalletaComponent implements OnInit {
             .subscribe({
               next: (response) => {
                 console.log('Producto añadido al carrito:', response);
+                Swal.fire({
+                  title: 'Galleta añadida',
+                  text: 'La galleta ha sido añadida al carrito.',
+                  timer: 2000,
+                  showConfirmButton: false,
+                  color: '#ff4aaa',
+                });
+                setTimeout(() => {
+                  window.location.href = '/tienda';
+                }, 2000);
               },
               error: (error) => {
                 console.error('Error al añadir producto al carrito:', error);

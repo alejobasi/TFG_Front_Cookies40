@@ -22,29 +22,63 @@
         </button>
       </div>
       <div class="modal-body">
-        <form (ngSubmit)="guardarNuevaDireccion()">
+        <form (ngSubmit)="guardarNuevaDireccion()" #direccionForm="ngForm">
           <h6 class="mb-3">Añadir Nueva Dirección</h6>
+
+          <!-- Mensaje de error general -->
+          <div
+            *ngIf="mostrarErrorCamposRequeridos"
+            class="alert alert-danger mb-3"
+          >
+            Por favor, complete todos los campos obligatorios (Calle, Número y
+            Teléfono).
+          </div>
+
           <div class="mb-3">
-            <label for="calle">Calle:</label>
+            <label for="calle"
+              >Calle: <span class="campo-requerido">*</span></label
+            >
             <input
               id="calle"
               [(ngModel)]="nuevaDireccion.calle"
               name="calle"
               class="form-control"
+              [class.is-invalid]="
+                mostrarErrorCamposRequeridos && !nuevaDireccion.calle
+              "
               required
             />
+            <div
+              *ngIf="mostrarErrorCamposRequeridos && !nuevaDireccion.calle"
+              class="invalid-feedback"
+            >
+              La calle es obligatoria.
+            </div>
           </div>
+
           <div class="mb-3">
-            <label for="numero">Número:</label>
+            <label for="numero"
+              >Número: <span class="campo-requerido">*</span></label
+            >
             <input
               id="numero"
               type="number"
               [(ngModel)]="nuevaDireccion.numero"
               name="numero"
               class="form-control"
+              [class.is-invalid]="
+                mostrarErrorCamposRequeridos && !nuevaDireccion.numero
+              "
               required
             />
+            <div
+              *ngIf="mostrarErrorCamposRequeridos && !nuevaDireccion.numero"
+              class="invalid-feedback"
+            >
+              El número es obligatorio.
+            </div>
           </div>
+
           <div class="mb-3">
             <label for="piso">Piso:</label>
             <input
@@ -53,17 +87,31 @@
               name="piso"
               class="form-control"
             />
+            <div class="form-text text-muted">El piso es opcional.</div>
           </div>
+
           <div class="mb-3">
-            <label for="telefono">Teléfono:</label>
+            <label for="telefono"
+              >Teléfono: <span class="campo-requerido">*</span></label
+            >
             <input
               id="telefono"
               [(ngModel)]="nuevaDireccion.telefono"
               name="telefono"
               class="form-control"
+              [class.is-invalid]="
+                mostrarErrorCamposRequeridos && !nuevaDireccion.telefono
+              "
               required
             />
+            <div
+              *ngIf="mostrarErrorCamposRequeridos && !nuevaDireccion.telefono"
+              class="invalid-feedback"
+            >
+              El teléfono es obligatorio.
+            </div>
           </div>
+
           <button type="submit" class="btn btn-primary w-100">
             Guardar Nueva Dirección
           </button>

@@ -193,6 +193,106 @@
   font-size: 1.1rem;
 }
 
+/* Contenedor de botones */
+.botones-accion {
+  display: flex;
+  gap: 15px;
+  margin-top: 25px;
+  justify-content: center;
+  flex-wrap: wrap;
+      overflow: hidden;
+
+}
+
+/* Estilos base para ambos botones */
+.btn-guardar, .btn-cancelar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 25px;
+  border-radius: 30px;
+  font-weight: bold;
+  font-size: 16px;
+  letter-spacing: 0.5px;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Botón Guardar */
+.btn-guardar {
+  background: linear-gradient(135deg, #ff78c4, #ff4aaa);
+  color: white;
+  border: none;
+  min-width: 180px;
+}
+
+.btn-guardar::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: 0.5s;
+}
+
+.btn-guardar:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 7px 15px rgba(255, 74, 170, 0.4);
+}
+
+.btn-guardar:hover::before {
+  left: 100%;
+}
+
+.btn-guardar:active {
+  transform: translateY(1px);
+  box-shadow: 0 3px 8px rgba(255, 74, 170, 0.3);
+}
+
+.btn-guardar:disabled {
+  background: linear-gradient(135deg, #d8d8d8, #b0b0b0);
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* Botón Cancelar */
+.btn-cancelar {
+  background: white;
+  color: #ff4aaa;
+  border: 2px solid #ff4aaa;
+  min-width: 140px;
+}
+
+.btn-cancelar:hover {
+  background: #fff0f8;
+  transform: translateY(-3px);
+  box-shadow: 0 5px 12px rgba(255, 74, 170, 0.15);
+}
+
+.btn-cancelar:active {
+  transform: translateY(1px);
+  box-shadow: 0 2px 5px rgba(255, 74, 170, 0.1);
+}
+
+/* Añadir iconos a los botones */
+.btn-guardar::after {
+  content: "🍪";
+  margin-left: 8px;
+  font-size: 18px;
+}
+
+.btn-cancelar::after {
+  content: "✕";
+  margin-left: 8px;
+  font-size: 16px;
+}
+
 /* Ajustes responsive */
 @media (max-width: 992px) {
   .crear-galleta-container {
@@ -247,6 +347,14 @@ top: 130px;
   .ingrediente-lista p {
     font-size: 14px;
   }
+   .btn-guardar, .btn-cancelar {
+    padding: 10px 20px;
+    font-size: 15px;
+  }
+  
+  .botones-accion {
+    margin-top: 20px;
+  }
 }
 
 @media (max-width: 500px) {
@@ -288,6 +396,17 @@ top: 172px;
   .ingrediente-lista img {
     max-width: 100px;
     max-height: 100px;
+  }
+    .botones-accion {
+    flex-direction: column;
+    width: 100%;
+    gap: 12px;
+  }
+  
+  .btn-guardar, .btn-cancelar {
+    width: 100%;
+    padding: 12px 15px;
+    font-size: 14px;
   }
 }
 

@@ -5,3 +5,13 @@
 .bi:hover{
     scale: 1.4;
 }
+.anadir{
+    background-color: #ff53e2;
+    color: white;
+    border: none;
+    padding: 0.8rem 1.5rem;
+    border-radius: 8px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}

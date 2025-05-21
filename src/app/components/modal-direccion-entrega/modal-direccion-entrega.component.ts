@@ -17,6 +17,7 @@ export class ModalDireccionEntregaComponent {
   direccionSeleccionada!: DatosEntrega;
   nuevaDireccion: DatosEntrega = new DatosEntrega();
   productos: any[] = [];
+  mostrarErrorCamposRequeridos: boolean = false;
 
   constructor(
     private pedidoService: PedidoService,
@@ -49,6 +50,17 @@ export class ModalDireccionEntregaComponent {
   }
 
   guardarNuevaDireccion(): void {
+    // Validar que los campos requeridos no estén vacíos
+    if (
+      !this.nuevaDireccion.calle ||
+      !this.nuevaDireccion.numero ||
+      !this.nuevaDireccion.telefono
+    ) {
+      this.mostrarErrorCamposRequeridos = true;
+      return; // No continuar con la operación
+    }
+
+    this.mostrarErrorCamposRequeridos = false;
     console.log('Guardando nueva dirección:', this.nuevaDireccion);
 
     this.pedidoService.guardarDireccion(this.nuevaDireccion).subscribe({

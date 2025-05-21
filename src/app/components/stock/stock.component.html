@@ -1,6 +1,6 @@
 <body>
-  <div class="container mt-4">
-    <h2>Lista de Ingredientes</h2>
+  <div class="container">
+    <h2>Gestión de Stock</h2>
     <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
       <!-- ID Column -->
       <ng-container matColumnDef="id">
@@ -17,41 +17,47 @@
       <!-- Cantidad Column -->
       <ng-container matColumnDef="cantidad">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>Cantidad</th>
-        <td mat-cell *matCellDef="let ingrediente">
+        <td
+          mat-cell
+          *matCellDef="let ingrediente"
+          [ngClass]="{ 'cantidad-actualizada': esActualizado(ingrediente.id) }"
+        >
           {{ ingrediente.cantidad }}
         </td>
       </ng-container>
 
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+      <tr
+        mat-row
+        *matRowDef="let row; columns: displayedColumns"
+        [ngClass]="{ 'fila-actualizada': esActualizado(row.id) }"
+      ></tr>
     </table>
 
-    <mat-paginator
-      [pageSizeOptions]="[5, 10, 20]"
-      showFirstLastButtons
-    ></mat-paginator>
+    <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons>
+    </mat-paginator>
   </div>
 
-  <div *ngIf="ingredientes.length > 0" class="container mt-4">
-    <h3>Subir Archivo de Ingredientes</h3>
+  <div *ngIf="ingredientes.length > 0" class="container">
+    <h3>Actualizar Inventario</h3>
     <form (ngSubmit)="envioFichero()" #fileForm="ngForm">
       <div class="mb-3">
-        <label for="fileInput" class="form-label">Seleccionar archivo</label>
+        <label for="fileInput" class="form-label"
+          >Archivo CSV de inventario</label
+        >
         <input
           type="file"
           id="fileInput"
           class="form-control"
           (change)="cambioFichero($event)"
+          accept=".csv"
           required
         />
+        <small class="form-text"> Formato: id, nombre, cantidad </small>
       </div>
       <button type="submit" class="btn btn-primary" [disabled]="!selectedFile">
-        Enviar
+        Actualizar Stock
       </button>
     </form>
-  </div>
-
-  <div *ngIf="mostrarMensaje" class="alert alert-info mt-3" role="alert">
-    {{ mensaje }}
   </div>
 </body>

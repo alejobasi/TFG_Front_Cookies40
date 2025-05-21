@@ -165,16 +165,19 @@ body {
 
 
   .circle-decorator {
-    width: 600px; /* Reduce el tamaño del círculo decorativo */
-    height: 600px;
+    width: 450px; /* Reduce el tamaño del círculo decorativo */
+    height: 450px;
     bottom: -100px;
     right: -100px;
   }
 
   .featured-cookie {
-    width: 700px; /* Reduce el tamaño de la galleta */
+    width: 600px; /* Reduce el tamaño de la galleta */
     bottom: -150px;
     right: -200px;
+  }
+  .image-content{
+    height: 70%;
   }
 }
 
@@ -221,4 +224,8 @@ body {
     max-width: 100%;
     height: 98%; 
   }
+  
+.image-content{
+  width: 0%;
+}
 }

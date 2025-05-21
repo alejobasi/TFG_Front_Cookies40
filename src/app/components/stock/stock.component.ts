@@ -13,6 +13,7 @@ import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { Ingrediente } from '../../models/Ingrediente';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-stock',
@@ -91,17 +92,40 @@ export class StockComponent implements OnInit {
             this.ingredienteService.getIngredientes().subscribe({
               next: (data) => {
                 this.ingredientes = data;
+                // Actualizar el dataSource con los nuevos datos
+                this.dataSource.data = this.ingredientes;
+
+                Swal.fire({
+                  title: 'Éxito',
+                  text: 'Los ingredientes se han actualizado correctamente.',
+                  timer: 2000,
+                  showConfirmButton: false,
+                });
+                // Asegurarse de que el paginador y el ordenamiento se restablezcan correctamente
+                if (this.dataSource.paginator) {
+                  this.dataSource.paginator.firstPage();
+                }
+
+                // Si quieres mantener el ordenamiento actual, puedes omitir la siguiente línea
+                if (this.dataSource.sort) {
+                  this.dataSource.sort.sortChange.emit();
+                }
 
                 this.identificarActualizados();
+                this.cdr.detectChanges();
               },
-              error: (error) => {},
+              error: (error) => {
+                console.error(
+                  'Error al obtener los ingredientes actualizados:',
+                  error
+                );
+              },
             });
           },
           error: (error: any) => {
             if (error.status == 400) {
               this.mostrarMensajeTemporal(error.error);
             }
-
             this.ngOnInit();
           },
         });
