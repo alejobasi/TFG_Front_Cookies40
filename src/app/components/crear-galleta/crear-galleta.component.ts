@@ -121,37 +121,48 @@ export class CrearGalletaComponent implements OnInit {
     console.log('IDs de ingredientes a enviar:', ingredientesIds);
 
     // Llamar al servicio con solo los IDs y el precio
-    this.productosServices
-      .comprobarProducto(ingredientesIds, this.precioTotal)
-      .subscribe({
-        next: (response) => {
-          console.log('Id galleta', response);
-          const sesion = localStorage.getItem('sesion');
-          const idUsuario = sesion ? JSON.parse(sesion).usuario.id : null;
-          this.carritoServices
-            .anadirProducto(idUsuario, response, 1)
-            .subscribe({
-              next: (response) => {
-                console.log('Producto añadido al carrito:', response);
-                Swal.fire({
-                  title: 'Galleta añadida',
-                  text: 'La galleta ha sido añadida al carrito.',
-                  timer: 2000,
-                  showConfirmButton: false,
-                  color: '#ff4aaa',
-                });
-                setTimeout(() => {
-                  window.location.href = '/tienda';
-                }, 2000);
-              },
-              error: (error) => {
-                console.error('Error al añadir producto al carrito:', error);
-              },
-            });
-        },
-        error: (error) => {
-          console.error('Error al guardar la galleta:', error);
-        },
+    const session = localStorage.getItem('sesion');
+    if (!session) {
+      Swal.fire({
+        title: 'Inicia sesión',
+        text: 'Debes iniciar sesión para añadir la galleta al carrito.',
+        icon: 'warning',
+        confirmButtonText: 'Aceptar',
+        color: '#ff4aaa',
       });
+    } else {
+      this.productosServices
+        .comprobarProducto(ingredientesIds, this.precioTotal)
+        .subscribe({
+          next: (response) => {
+            console.log('Id galleta', response);
+            const sesion = localStorage.getItem('sesion');
+            const idUsuario = sesion ? JSON.parse(sesion).usuario.id : null;
+            this.carritoServices
+              .anadirProducto(idUsuario, response, 1)
+              .subscribe({
+                next: (response) => {
+                  console.log('Producto añadido al carrito:', response);
+                  Swal.fire({
+                    title: 'Galleta añadida',
+                    text: 'La galleta ha sido añadida al carrito.',
+                    timer: 2000,
+                    showConfirmButton: false,
+                    color: '#ff4aaa',
+                  });
+                  setTimeout(() => {
+                    window.location.href = '/tienda';
+                  }, 2000);
+                },
+                error: (error) => {
+                  console.error('Error al añadir producto al carrito:', error);
+                },
+              });
+          },
+          error: (error) => {
+            console.error('Error al guardar la galleta:', error);
+          },
+        });
+    }
   }
 }
