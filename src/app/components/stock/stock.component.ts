@@ -48,6 +48,16 @@ export class StockComponent implements OnInit {
   mostrarMensaje: boolean = false;
 
   ngOnInit(): void {
+    const sesion = localStorage.getItem('sesion');
+    if (sesion === null) {
+      window.location.href = '/home';
+    }
+    const sesionObj = sesion ? JSON.parse(sesion) : null;
+    const rol = sesionObj?.usuario?.rol;
+    if (rol.id !== 2) {
+      window.location.href = '/home';
+    }
+
     this.ingredienteService.getIngredientes().subscribe({
       next: (data) => {
         this.ingredientes = data;

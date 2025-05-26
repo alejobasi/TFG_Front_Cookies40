@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, OnInit } from '@angular/core';
 import { Ingrediente } from '../../models/Ingrediente';
 import { CommonModule } from '@angular/common';
 import { NgxPaginationModule } from 'ngx-pagination';
@@ -9,15 +9,54 @@ import { NgxPaginationModule } from 'ngx-pagination';
   templateUrl: './modal-filtrar-por-ingrediente.component.html',
   styleUrl: './modal-filtrar-por-ingrediente.component.css',
 })
-export class ModalFiltrarPorIngredienteComponent {
-  @Input() ingredientes: Ingrediente[] = [];
+export class ModalFiltrarPorIngredienteComponent implements OnInit {
+  // IDs de los ingredientes a excluir
+  private ingredientesExcluidosIds: number[] = [2, 3, 4, 5];
+
+  private _ingredientes: Ingrediente[] = [];
+  ingredientesFiltrados: Ingrediente[] = [];
+
+  @Input()
+  set ingredientes(value: Ingrediente[]) {
+    this._ingredientes = value || [];
+    this.filtrarIngredientes();
+  }
+
+  get ingredientes(): Ingrediente[] {
+    return this._ingredientes;
+  }
+
   @Output() seleccionConfirmada = new EventEmitter<Ingrediente[]>();
 
   ingredientesSeleccionados: Ingrediente[] = [];
-  page: number = 1; // Página actual para la paginación
+  page: number = 1;
+
+  ngOnInit(): void {
+    this.filtrarIngredientes();
+  }
+
+  private filtrarIngredientes(): void {
+    console.log('Filtrando ingredientes...', this._ingredientes);
+
+    if (!this._ingredientes || this._ingredientes.length === 0) {
+      this.ingredientesFiltrados = [];
+      return;
+    }
+
+    this.ingredientesFiltrados = this._ingredientes.filter((ingrediente) => {
+      // Aseguramos que el ID sea tratado como número
+      const id = Number(ingrediente.id);
+      const excluir = this.ingredientesExcluidosIds.includes(id);
+      return !excluir;
+    });
+
+    console.log('Ingredientes filtrados:', this.ingredientesFiltrados);
+  }
 
   toggleIngrediente(ingrediente: Ingrediente): void {
-    const index = this.ingredientesSeleccionados.indexOf(ingrediente);
+    const index = this.ingredientesSeleccionados.findIndex(
+      (i) => i.id === ingrediente.id
+    );
     if (index === -1) {
       this.ingredientesSeleccionados.push(ingrediente);
     } else {

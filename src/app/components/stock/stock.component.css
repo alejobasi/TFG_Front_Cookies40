@@ -5,6 +5,7 @@ body {
   font-family: 'Arial', sans-serif;
   color: #333;
   margin: 0;
+  overflow: hidden;
 }
 
 /* Contenedor principal */

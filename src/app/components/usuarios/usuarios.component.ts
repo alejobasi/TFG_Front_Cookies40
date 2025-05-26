@@ -19,6 +19,16 @@ export class UsuariosComponent implements OnInit {
   usuarios: Usuario[] = [];
   usuarioSeleccionado!: Usuario;
   ngOnInit(): void {
+    const sesion = localStorage.getItem('sesion');
+    if (sesion === null) {
+      window.location.href = '/home';
+    }
+    const sesionObj = sesion ? JSON.parse(sesion) : null;
+    const rol = sesionObj?.usuario?.rol;
+    if (rol.id !== 2) {
+      window.location.href = '/home';
+    }
+
     this.usuarioService.getUsuarios().subscribe({
       next: (data) => {
         this.usuarios = data.filter(

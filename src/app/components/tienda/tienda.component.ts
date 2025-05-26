@@ -158,7 +158,6 @@ export class TiendaComponent implements OnInit {
               .anadirProducto(idUsuario, idProducto, cantidad)
               .subscribe({
                 next: (data) => {
-
                   const menuIcon = document.querySelector('.menu-icon');
                   const menuButton = document.querySelector('.menu-button');
                   if (menuIcon && menuButton) {
@@ -175,8 +174,7 @@ export class TiendaComponent implements OnInit {
 
                   this.cargarCarrito();
                 },
-                error: (error) => {
-                },
+                error: (error) => {},
               });
           } else {
             // Mostramos mensaje de error solo si no hay stock
@@ -190,8 +188,7 @@ export class TiendaComponent implements OnInit {
             });
           }
         },
-        error: (error) => {
-        },
+        error: (error) => {},
       });
     } else {
       this.modalLoginService.openModal();

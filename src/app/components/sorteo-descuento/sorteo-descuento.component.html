@@ -1,53 +1,57 @@
-<div class="sorteo-container">
-  <h2 class="titulo">¡Gira la Ruleta y Consigue tu Descuento!</h2>
+<body>
+  <div class="sorteo-container">
+    <h2 class="titulo">¡Gira la Ruleta y Consigue tu Descuento!</h2>
 
-  <!-- Mensaje cuando tiene un descuento sin usar -->
-  <div *ngIf="tieneDescuentoSinUsar" class="cuenta-atras descuento-activo">
-    <p>Tienes un descuento activo sin utilizar.</p>
-    <div class="descuento-info" *ngIf="descuentoActual">
-      <p>
-        Tu descuento actual:
-        <span class="descuento">{{ descuentoActual.cantidad }}% DTO</span>
+    <!-- Mensaje cuando tiene un descuento sin usar -->
+    <div *ngIf="tieneDescuentoSinUsar" class="cuenta-atras descuento-activo">
+      <p>Tienes un descuento activo sin utilizar.</p>
+      <div class="descuento-info" *ngIf="descuentoActual">
+        <p>
+          Tu descuento actual:
+          <span class="descuento">{{ descuentoActual.cantidad }}% DTO</span>
+        </p>
+      </div>
+      <p class="mensaje-usar">
+        Debes utilizar este descuento antes de poder girar la ruleta nuevamente.
       </p>
     </div>
-    <p class="mensaje-usar">
-      Debes utilizar este descuento antes de poder girar la ruleta nuevamente.
-    </p>
+
+    <!-- Mensaje de cuenta atrás si no puede girar por tiempo -->
+    <div *ngIf="!puedeGirar && !tieneDescuentoSinUsar" class="cuenta-atras">
+      <p>Ya has obtenido un descuento. Podrás girar nuevamente en:</p>
+      <div class="contador">{{ tiempoRestante }}</div>
+    </div>
+
+    <div class="ruleta-contenedor">
+      <canvas #canvas width="350" height="350"></canvas>
+    </div>
+
+    <button
+      class="btn-girar"
+      [disabled]="girando || !puedeGirar"
+      (click)="girarRuleta()"
+    >
+      <ng-container *ngIf="girando">Girando...</ng-container>
+      <ng-container *ngIf="!girando && puedeGirar">¡Girar Ruleta!</ng-container>
+      <ng-container *ngIf="!girando && !puedeGirar && !tieneDescuentoSinUsar">
+        Espera {{ tiempoRestante }}
+      </ng-container>
+      <ng-container *ngIf="!girando && tieneDescuentoSinUsar">
+        Usa tu descuento actual primero
+      </ng-container>
+    </button>
+
+    <div class="resultado" *ngIf="mostrarResultado && resultadoDescuento">
+      <h3>¡Felicidades!</h3>
+      <p>
+        Has ganado:
+        <span class="descuento">{{ resultadoDescuento.texto }}</span>
+      </p>
+
+      <p class="info-tiempo">
+        Este descuento estará disponible en tu perfil durante los próximos 7
+        días.
+      </p>
+    </div>
   </div>
-
-  <!-- Mensaje de cuenta atrás si no puede girar por tiempo -->
-  <div *ngIf="!puedeGirar && !tieneDescuentoSinUsar" class="cuenta-atras">
-    <p>Ya has obtenido un descuento. Podrás girar nuevamente en:</p>
-    <div class="contador">{{ tiempoRestante }}</div>
-  </div>
-
-  <div class="ruleta-contenedor">
-    <canvas #canvas width="350" height="350"></canvas>
-  </div>
-
-  <button
-    class="btn-girar"
-    [disabled]="girando || !puedeGirar"
-    (click)="girarRuleta()"
-  >
-    <ng-container *ngIf="girando">Girando...</ng-container>
-    <ng-container *ngIf="!girando && puedeGirar">¡Girar Ruleta!</ng-container>
-    <ng-container *ngIf="!girando && !puedeGirar && !tieneDescuentoSinUsar">
-      Espera {{ tiempoRestante }}
-    </ng-container>
-    <ng-container *ngIf="!girando && tieneDescuentoSinUsar">
-      Usa tu descuento actual primero
-    </ng-container>
-  </button>
-
-  <div class="resultado" *ngIf="mostrarResultado && resultadoDescuento">
-    <h3>¡Felicidades!</h3>
-    <p>
-      Has ganado: <span class="descuento">{{ resultadoDescuento.texto }}</span>
-    </p>
-
-    <p class="info-tiempo">
-      Este descuento estará disponible en tu perfil durante los próximos 7 días.
-    </p>
-  </div>
-</div>
+</body>

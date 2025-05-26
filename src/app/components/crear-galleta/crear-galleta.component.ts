@@ -15,9 +15,6 @@ import { Title } from '@angular/platform-browser';
   styleUrl: './crear-galleta.component.css',
 })
 export class CrearGalletaComponent implements OnInit {
-  cancelarCreacion() {
-    throw new Error('Method not implemented.');
-  }
   ingredientes: Ingrediente[] = [];
   todosIngredientes: Ingrediente[] = [];
 
@@ -164,5 +161,11 @@ export class CrearGalletaComponent implements OnInit {
           },
         });
     }
+  }
+  cancelarCreacion() {
+    this.ingredientesSobreGalleta = [];
+    this.precioTotal = 3.5;
+    this.ingredientes = [...this.todosIngredientes];
+    this.eliminarIngredientesPorId();
   }
 }

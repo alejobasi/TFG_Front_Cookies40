@@ -1,5 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { ModalLoginService } from '../../services/modal-login/modal-login.service';
 import { UsuarioService } from '../../services/usuario/usuario.service';
 import { CommonModule } from '@angular/common';
@@ -9,7 +14,7 @@ import Swal from 'sweetalert2';
   selector: 'app-modal-cambiar-contrasena',
   imports: [ReactiveFormsModule, CommonModule],
   templateUrl: './modal-cambiar-contrasena.component.html',
-  styleUrl: './modal-cambiar-contrasena.component.css'
+  styleUrl: './modal-cambiar-contrasena.component.css',
 })
 export class ModalCambiarContrasenaComponent implements OnInit {
   formularioCambiar: FormGroup;
@@ -22,29 +27,31 @@ export class ModalCambiarContrasenaComponent implements OnInit {
   ) {
     this.formularioCambiar = this.fb.group({
       codigo: ['', Validators.required],
-      nuevaContrasena: ['', [Validators.required, Validators.minLength(6)]]
+      nuevaContrasena: ['', [Validators.required, Validators.minLength(6)]],
     });
   }
 
   ngOnInit(): void {
-    this.modalLoginService.cambiarContrasenaModalState$.subscribe(({ state, correo }) => {
-      const modal = document.getElementById('cambiarContrasenaModal');
-      if (modal) {
-        if (state) {
-          this.correo = correo || '';
-          modal.classList.add('show');
-          modal.style.display = 'block';
-          modal.setAttribute('aria-modal', 'true');
-          modal.removeAttribute('aria-hidden');
-          modal.focus();
-        } else {
-          modal.classList.remove('show');
-          modal.style.display = 'none';
-          modal.setAttribute('aria-hidden', 'true');
-          modal.removeAttribute('aria-modal');
+    this.modalLoginService.cambiarContrasenaModalState$.subscribe(
+      ({ state, correo }) => {
+        const modal = document.getElementById('cambiarContrasenaModal');
+        if (modal) {
+          if (state) {
+            this.correo = correo || '';
+            modal.classList.add('show');
+            modal.style.display = 'block';
+            modal.setAttribute('aria-modal', 'true');
+            modal.removeAttribute('aria-hidden');
+            modal.focus();
+          } else {
+            modal.classList.remove('show');
+            modal.style.display = 'none';
+            modal.setAttribute('aria-hidden', 'true');
+            modal.removeAttribute('aria-modal');
+          }
         }
       }
-    });
+    );
   }
 
   cambiarContrasena(): void {
@@ -53,22 +60,31 @@ export class ModalCambiarContrasenaComponent implements OnInit {
       const envio = { correo: this.correo, codigo, nuevaContrasena };
       this.usuarioService.cambiarContrasena(envio).subscribe(
         (response) => {
-          
           Swal.fire({
-            imageAlt: "cookies40",
-            imageUrl: "assets/images/logo.png",
+            imageAlt: 'cookies40',
+            imageUrl: 'assets/images/logo.png',
             imageHeight: 100,
             imageWidth: 385,
             title: 'Contraseña cambiada',
             text: 'La contraseña ha sido cambiada con éxito.',
-            color: '#fc60e2', 
+            color: '#fc60e2',
             showConfirmButton: false,
-            timer: 2500
+            timer: 2500,
           });
 
           this.modalLoginService.closeCambiarContrasenaModal();
         },
         (error) => {
+          Swal.fire({
+            imageAlt: 'cookies40',
+            imageUrl: 'assets/images/logo.png',
+            imageHeight: 100,
+            imageWidth: 385,
+            title: 'Error al cambiar la contraseña',
+            text: 'Ocurrió un error al cambiar la contraseña o el codigo es incorrecto.',
+            color: '#fc60e2',
+            showConfirmButton: true,
+          });
           this.modalLoginService.closeCambiarContrasenaModal();
         }
       );

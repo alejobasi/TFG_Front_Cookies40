@@ -1,15 +1,20 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { ModalLoginService } from '../../services/modal-login/modal-login.service';
 import { UsuarioService } from '../../services/usuario/usuario.service';
-
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-modal-registro',
-   imports: [ReactiveFormsModule, CommonModule],
+  imports: [ReactiveFormsModule, CommonModule],
   templateUrl: './modal-registro.component.html',
-  styleUrl: './modal-registro.component.css'
+  styleUrl: './modal-registro.component.css',
 })
 export class ModalRegistroComponent implements OnInit {
   formularioRegistro: FormGroup;
@@ -17,18 +22,18 @@ export class ModalRegistroComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     protected modalLoginService: ModalLoginService,
-    private usuarioService: UsuarioService,
+    private usuarioService: UsuarioService
   ) {
     this.formularioRegistro = this.fb.group({
       nombre: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       contrasena: ['', [Validators.required, Validators.minLength(6)]],
-      confirmPassword: ['', [Validators.required, Validators.minLength(6)]]
+      confirmPassword: ['', [Validators.required, Validators.minLength(6)]],
     });
   }
 
   ngOnInit(): void {
-    this.modalLoginService.registroModalState$.subscribe(state => {
+    this.modalLoginService.registroModalState$.subscribe((state) => {
       const modal = document.getElementById('registroModal');
       const contenido = document.querySelector('.contenido');
       if (modal) {
@@ -64,26 +69,53 @@ export class ModalRegistroComponent implements OnInit {
 
   registrarse(): void {
     if (this.formularioRegistro.valid) {
-      const { nombre, email, contrasena, confirmPassword } = this.formularioRegistro.value;
+      const { nombre, email, contrasena, confirmPassword } =
+        this.formularioRegistro.value;
       if (contrasena !== confirmPassword) {
-        alert('Las contraseñas no coinciden');
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Las contraseñas no coinciden',
+          timer: 1500,
+          showConfirmButton: false,
+        });
         return;
       }
       const usuario = { nombre, email, contrasena };
-      this.usuarioService.registrarUsuario(usuario, { responseType: 'text' }).subscribe({
-        next: (response) => {
-          console.log(response);
-          alert('Usuario registrado correctamente');
-          this.modalLoginService.closeRegistroModal();
-          this.formularioRegistro.reset();
-          this.modalLoginService.openModal();
-        },
-        error: (error) => {
-          alert(error.error);
-          console.error(error);
-        }
-      });
+      this.usuarioService
+        .registrarUsuario(usuario, { responseType: 'text' })
+        .subscribe({
+          next: (response) => {
+            console.log(response);
+            Swal.fire({
+              imageAlt: 'cookies40',
+              imageUrl: 'assets/images/logo.png',
+              imageHeight: 100,
+              imageWidth: 385,
+              title: 'Registro exitoso',
+              text: 'Usuario registrado correctamente.',
+              color: '#fc60e2',
+              showConfirmButton: false,
+              timer: 1500,
+            });
+            this.modalLoginService.closeRegistroModal();
+            this.formularioRegistro.reset();
+            this.modalLoginService.openModal();
+          },
+          error: (error) => {
+            Swal.fire({
+              imageAlt: 'cookies40',
+              imageUrl: 'assets/images/logo.png',
+              imageHeight: 100,
+              imageWidth: 385,
+              title: 'Error al registrar',
+              text: 'Ocurrió un error al registrar el usuario.',
+              color: '#fc60e2',
+              showConfirmButton: true,
+            });
+            console.error(error);
+          },
+        });
     }
   }
-  
 }

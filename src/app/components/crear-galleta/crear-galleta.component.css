@@ -71,7 +71,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 160px;
+  height: 200px;
   cursor: pointer;
   position: relative;
   z-index: 1;
@@ -336,7 +336,7 @@ top: 130px;
   }
   
   .ingrediente-lista {
-    height: 140px;
+    height: 170px;
   }
   
   .ingrediente-lista img {
@@ -385,12 +385,20 @@ top: 172px;
   }
   
   .columna-ingredientes {
-    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
-    gap: 10px;
+     grid-template-columns: 1fr; 
+    gap: 15px;
+    max-width: 280px;
+    margin: 0 auto;
   }
   
-  .ingrediente-lista {
-    height: 120px;
+ .ingrediente-lista {
+    height: auto;
+    padding: 10px 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    border-bottom: 1px solid #eee;
   }
   
   .ingrediente-lista img {
@@ -438,9 +446,8 @@ overflow: hidden;
     font-size: 0.9rem;
   }
   
-  .columna-ingredientes {
-    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
-    gap: 8px;
+ .columna-ingredientes {
+    max-width: 240px;
   }
   
   .ingrediente-lista {

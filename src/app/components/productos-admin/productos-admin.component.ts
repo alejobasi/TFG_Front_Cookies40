@@ -26,6 +26,16 @@ export class ProductosAdminComponent implements OnInit {
     private ingredienteService: IngredienteService
   ) {}
   ngOnInit(): void {
+    const sesion = localStorage.getItem('sesion');
+    if (sesion === null) {
+      window.location.href = '/home';
+    }
+    const sesionObj = sesion ? JSON.parse(sesion) : null;
+    const rol = sesionObj?.usuario?.rol;
+    if (rol.id !== 2) {
+      window.location.href = '/home';
+    }
+
     this.obtenerProductos();
     this.obtenerFamilias();
     this.obtenerIngredientes();

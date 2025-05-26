@@ -26,7 +26,7 @@
         <div class="list-group">
           <div
             *ngFor="
-              let ingrediente of ingredientes
+              let ingrediente of ingredientesFiltrados
                 | paginate : { itemsPerPage: 5, currentPage: page }
             "
             class="list-group-item list-group-item-action"
