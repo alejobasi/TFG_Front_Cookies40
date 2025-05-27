@@ -90,6 +90,9 @@ export class ModalEditarUsuarioComponent implements OnChanges {
             timer: 1500,
             timerProgressBar: true,
           });
+          setTimeout(() => {
+            window.location.reload();
+          }, 1000);
         },
         error: (error) => {
           console.error('Error al actualizar el usuario:', error);
