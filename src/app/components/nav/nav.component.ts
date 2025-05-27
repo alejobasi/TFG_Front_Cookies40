@@ -83,16 +83,34 @@ export class NavComponent implements OnInit {
     const idProducto = producto.id;
     const cantidad = 1;
 
+    const itemExistente = this.carrito.find(
+      (item: any) => item.producto.id === idProducto
+    );
+    if (itemExistente) {
+      itemExistente.cantidad += 1;
+    } else {
+      this.carrito.push({
+        producto: producto,
+        cantidad: 1,
+      });
+    }
+
+    if (this.descuentoAplicado) {
+      this.calcularTotalConDescuento();
+    }
+
     this.carritoService
       .anadirProducto(idUsuario, idProducto, cantidad)
       .subscribe({
         next: (data) => {
-          this.carrito = data;
           console.log('Producto añadido al carrito:', data);
-          this.cargarCarrito();
+          if (JSON.stringify(data) !== JSON.stringify(this.carrito)) {
+            this.cargarCarrito();
+          }
         },
         error: (error) => {
           console.error('Error al añadir producto al carrito:', error);
+          this.cargarCarrito();
         },
       });
   }
@@ -108,16 +126,34 @@ export class NavComponent implements OnInit {
     const idProducto = producto.id;
     const cantidad = -1;
 
+    const itemIndex = this.carrito.findIndex(
+      (item: any) => item.producto.id === idProducto
+    );
+    if (itemIndex !== -1) {
+      const item = this.carrito[itemIndex];
+      if (item.cantidad > 1) {
+        item.cantidad -= 1;
+      } else {
+        this.carrito.splice(itemIndex, 1);
+      }
+    }
+
+    if (this.descuentoAplicado) {
+      this.calcularTotalConDescuento();
+    }
+
     this.carritoService
       .anadirProducto(idUsuario, idProducto, cantidad)
       .subscribe({
         next: (data) => {
-          this.carrito = data;
-          console.log('Producto añadido al carrito:', data);
-          this.cargarCarrito();
+          console.log('Producto quitado del carrito:', data);
+          if (JSON.stringify(data) !== JSON.stringify(this.carrito)) {
+            this.cargarCarrito();
+          }
         },
         error: (error) => {
-          console.error('Error al añadir producto al carrito:', error);
+          console.error('Error al quitar producto del carrito:', error);
+          this.cargarCarrito();
         },
       });
   }

@@ -1,6 +1,6 @@
 /* Fondo general */
 body {
-  height: 100vh;
+  height: auto;
   background: linear-gradient(180deg, #f8f9fa 0%, #ffffff 100%);
   font-family: 'Arial', sans-serif;
   color: #333;

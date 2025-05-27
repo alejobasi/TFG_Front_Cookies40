@@ -1,9 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import {
+  AbstractControl,
   FormBuilder,
   FormGroup,
   ReactiveFormsModule,
+  ValidationErrors,
   Validators,
 } from '@angular/forms';
 import { ModalLoginService } from '../../services/modal-login/modal-login.service';
@@ -27,9 +29,47 @@ export class ModalRegistroComponent implements OnInit {
     this.formularioRegistro = this.fb.group({
       nombre: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
-      contrasena: ['', [Validators.required, Validators.minLength(6)]],
-      confirmPassword: ['', [Validators.required, Validators.minLength(6)]],
+      contrasena: [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(8),
+          this.validarContrasenaFuerte,
+        ],
+      ],
+      confirmPassword: [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(8),
+          this.validarContrasenaFuerte,
+        ],
+      ],
     });
+  }
+
+  validarContrasenaFuerte(control: AbstractControl): ValidationErrors | null {
+    const value = control.value;
+
+    if (!value) {
+      return null;
+    }
+
+    const tieneMinuscula = /[a-z]/.test(value);
+    const tieneMayuscula = /[A-Z]/.test(value);
+    const tieneNumero = /[0-9]/.test(value);
+
+    const contrasenaValida = tieneMinuscula && tieneMayuscula && tieneNumero;
+
+    return contrasenaValida
+      ? null
+      : {
+          contrasenaDebil: {
+            tieneMinuscula,
+            tieneMayuscula,
+            tieneNumero,
+          },
+        };
   }
 
   ngOnInit(): void {
@@ -67,6 +107,13 @@ export class ModalRegistroComponent implements OnInit {
     }
   }
 
+  verificarRequisito(campo: string, requisito: string): boolean {
+    const control = this.formularioRegistro.get(campo);
+    if (!control || !control.errors || !control.errors['contrasenaDebil']) {
+      return true;
+    }
+    return control.errors['contrasenaDebil'][requisito];
+  }
   registrarse(): void {
     if (this.formularioRegistro.valid) {
       const { nombre, email, contrasena, confirmPassword } =

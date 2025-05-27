@@ -86,6 +86,43 @@
                 </button>
               </div>
             </div>
+
+            <!-- Requisitos de contraseña -->
+            <div class="requisitos-password">
+              <p class="requisitos-titulo">La contraseña debe tener:</p>
+              <ul>
+                <li
+                  [ngClass]="{
+                    cumplido:
+                      formularioRegistro.get('contrasena')?.value?.length >= 8
+                  }"
+                >
+                  Al menos 8 caracteres
+                </li>
+                <li
+                  [ngClass]="{
+                    cumplido: verificarRequisito('contrasena', 'tieneMinuscula')
+                  }"
+                >
+                  Al menos una letra minúscula
+                </li>
+                <li
+                  [ngClass]="{
+                    cumplido: verificarRequisito('contrasena', 'tieneMayuscula')
+                  }"
+                >
+                  Al menos una letra mayúscula
+                </li>
+                <li
+                  [ngClass]="{
+                    cumplido: verificarRequisito('contrasena', 'tieneNumero')
+                  }"
+                >
+                  Al menos un número
+                </li>
+              </ul>
+            </div>
+
             <div
               *ngIf="
                 formularioRegistro.get('contrasena')?.invalid &&
@@ -101,7 +138,12 @@
               <div
                 *ngIf="formularioRegistro.get('contrasena')?.errors?.['minlength']"
               >
-                Contraseña debe tener al menos 6 caracteres.
+                Contraseña debe tener al menos 8 caracteres.
+              </div>
+              <div
+                *ngIf="formularioRegistro.get('contrasena')?.errors?.['contrasenaDebil']"
+              >
+                La contraseña debe incluir mayúsculas, minúsculas y números.
               </div>
             </div>
           </div>

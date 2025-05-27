@@ -82,6 +82,44 @@
     background-color: #f8f8f8;
   }
   
+  .requisitos-password {
+  font-size: 0.85rem;
+  margin-top: 0.5rem;
+  padding: 0.5rem;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+}
+
+.requisitos-titulo {
+  font-weight: 600;
+  margin-bottom: 0.3rem;
+  color: #666;
+}
+
+.requisitos-password ul {
+  padding-left: 1.5rem;
+  margin-bottom: 0;
+}
+
+.requisitos-password li {
+  margin-bottom: 0.2rem;
+  color: #888;
+  transition: color 0.3s ease;
+}
+
+.requisitos-password li.cumplido {
+  color: #42b983;
+}
+
+.requisitos-password li.cumplido::before {
+  content: "✓ ";
+  color: #42b983;
+}
+
+.requisitos-password li:not(.cumplido)::before {
+  content: "○ ";
+  color: #ff9800;
+}
   @media (max-width: 576px) {
     .modal-custom-size {
       width: 90%;

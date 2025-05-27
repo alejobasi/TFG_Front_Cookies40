@@ -139,4 +139,27 @@ export class ProductoService {
       options
     );
   }
+
+  actualizarProducto(producto: Producto): Observable<any> {
+    const sesion = localStorage.getItem('sesion');
+    const token = sesion ? JSON.parse(sesion).token : null;
+
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    });
+
+    // Crear el objeto ProductoEditarDto que espera el backend
+    const productoEditarDto = {
+      id: producto.id,
+      nombre: producto.nombre,
+      descripcion: producto.descripcion,
+      precio: producto.precio,
+      precioOferta: producto.precioOferta,
+    };
+
+    return this.http.put<any>(`${this.api}/actualizar`, productoEditarDto, {
+      headers,
+    });
+  }
 }

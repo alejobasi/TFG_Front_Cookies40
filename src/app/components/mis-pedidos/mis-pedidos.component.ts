@@ -4,10 +4,11 @@ import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
 import { CommonModule } from '@angular/common';
 import { ProductoService } from '../../services/producto/producto.service';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-mis-pedidos',
-  imports: [CommonModule],
+  imports: [CommonModule, RouterLink],
   templateUrl: './mis-pedidos.component.html',
   styleUrl: './mis-pedidos.component.css',
 })
