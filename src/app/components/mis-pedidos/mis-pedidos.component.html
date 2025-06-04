@@ -94,8 +94,14 @@
                   </div>
                 </td>
                 <td class="text-center">{{ producto.cantidad }}</td>
-                <td class="text-end">
+                <td class="text-end" *ngIf="!producto.precioOferta">
                   {{ producto.precio | currency : "EUR" : "symbol" : "1.2-2" }}
+                </td>
+                <td class="text-end" *ngIf="producto.precioOferta">
+                  {{
+                    producto.precioOferta
+                      | currency : "EUR" : "symbol" : "1.2-2"
+                  }}
                 </td>
                 <td class="text-end">
                   {{
