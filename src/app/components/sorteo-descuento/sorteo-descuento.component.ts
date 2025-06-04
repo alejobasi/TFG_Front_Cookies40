@@ -42,16 +42,13 @@ export class SorteoDescuentoComponent
 
   ngOnInit(): void {
     this.verificarDescuentoActivo();
-    // Obtenemos los descuentos de la base de datos
     this.descuentoService.getDescuentos().subscribe({
       next: (data) => {
         this.descuentosDB = data;
         console.log('Descuentos obtenidos:', this.descuentosDB);
 
-        // Convertimos los descuentos de la BD al formato de la ruleta
         this.opcionesRuleta = this.mapearDescuentos(this.descuentosDB);
 
-        // Actualizamos el arco y dibujamos la ruleta
         this.arc = (Math.PI * 2) / this.opcionesRuleta.length;
 
         if (this.ctx) {
@@ -60,7 +57,6 @@ export class SorteoDescuentoComponent
       },
       error: (error) => {
         console.error('Error al obtener descuentos:', error);
-        // Si hay error, usamos los datos por defecto
       },
     });
   }
@@ -77,32 +73,26 @@ export class SorteoDescuentoComponent
 
     const usuario = JSON.parse(sesion).usuario;
     if (!usuario) return;
-
-    // Verificar si el usuario tiene un descuento sin usar
     if (usuario.descuento) {
       this.descuentoActual = usuario.descuento;
       this.tieneDescuentoSinUsar = true;
       this.puedeGirar = false;
-      return; // No continuar con la verificación de tiempo si hay descuento sin usar
+      return;
     }
 
-    // Si llega aquí, no tiene descuento sin usar, verificar restricción de tiempo
     if (!usuario.fechaSorteo) return;
 
-    // Convertir fecha de string a Date
     const fechaSorteo = new Date(usuario.fechaSorteo);
-    // Añadir 7 días a la fecha del sorteo
+
     const fechaLimite = new Date(fechaSorteo);
     fechaLimite.setDate(fechaLimite.getDate() + 7);
 
     const ahora = new Date();
 
     if (ahora < fechaLimite) {
-      // El usuario todavía está en el período de espera
       this.puedeGirar = false;
       this.tiempoFinalizacion = fechaLimite;
 
-      // Iniciar la cuenta atrás
       this.iniciarCuentaAtras();
     }
   }
@@ -114,7 +104,7 @@ export class SorteoDescuentoComponent
 
     this.intervaloTiempo = setInterval(() => {
       this.actualizarTiempoRestante();
-    }, 1000); // Actualizar cada segundo
+    }, 1000);
   }
 
   actualizarTiempoRestante(): void {
@@ -124,14 +114,11 @@ export class SorteoDescuentoComponent
     const diferencia = this.tiempoFinalizacion.getTime() - ahora.getTime();
 
     if (diferencia <= 0) {
-      // El tiempo ha terminado
       this.puedeGirar = true;
       clearInterval(this.intervaloTiempo);
       this.tiempoRestante = '';
       return;
     }
-
-    // Calcular días, horas, minutos y segundos
     const dias = Math.floor(diferencia / (1000 * 60 * 60 * 24));
     const horas = Math.floor(
       (diferencia % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
@@ -141,7 +128,6 @@ export class SorteoDescuentoComponent
 
     this.tiempoRestante = `${dias}d ${horas}h ${minutos}m ${segundos}s`;
   }
-  // Opciones de descuento
   mapearDescuentos(
     descuentos: Descuento[]
   ): { valor: number | string; texto: string; color: string }[] {
@@ -350,18 +336,25 @@ export class SorteoDescuentoComponent
                 const sesionActual = JSON.parse(sesion);
                 if (sesionActual.usuario) {
                   sesionActual.usuario.descuento = descuentoFecha.descuento;
-                  sesionActual.usuario.fechaSorteo = descuentoFecha.fecha;
+
+                  // Calcular manualmente la fecha y guardarla
+                  const ahora = new Date();
+                  sesionActual.usuario.fechaSorteo = ahora.toISOString();
+
                   localStorage.setItem('sesion', JSON.stringify(sesionActual));
 
                   // Iniciar la cuenta atrás después de guardar el descuento
                   this.puedeGirar = false;
+                  this.tieneDescuentoSinUsar = true;
+                  this.descuentoActual = descuentoFecha.descuento;
 
-                  const fechaSorteo = new Date(descuentoFecha.fecha);
-                  const fechaLimite = new Date(fechaSorteo);
+                  // Calcular exactamente 7 días (168 horas) desde ahora
+                  const fechaLimite = new Date(ahora);
                   fechaLimite.setDate(fechaLimite.getDate() + 7);
-
                   this.tiempoFinalizacion = fechaLimite;
                   this.iniciarCuentaAtras();
+
+                  window.dispatchEvent(new CustomEvent('descuentoGanado'));
                 }
               },
               error: (error) => {

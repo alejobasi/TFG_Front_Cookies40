@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { ListaProductos } from '../../models/ListaProductos';
 import { CommonModule } from '@angular/common';
@@ -26,12 +26,14 @@ import { FormsModule } from '@angular/forms';
   templateUrl: './nav.component.html',
   styleUrl: './nav.component.css',
 })
-export class NavComponent implements OnInit {
+export class NavComponent implements OnInit, OnDestroy {
   usuario: any = null;
   carrito: any = null;
   usuarioSeleccionado!: Usuario;
   descuentoAplicado: boolean = false;
   totalConDescuento: string = '0.00';
+  private descuentoListener: any;
+
   constructor(
     private usuarioService: UsuarioService,
     private modalLogin: ModalLoginService,
@@ -47,6 +49,9 @@ export class NavComponent implements OnInit {
         this.realizarPedido(idDireccionEntrega);
       }
     );
+    this.descuentoListener = () => this.cargarUsuario();
+    window.addEventListener('descuentoGanado', this.descuentoListener);
+
     this.cargarUsuario();
     if (this.estaLogueado()) {
       this.cargarCarrito();
@@ -58,6 +63,11 @@ export class NavComponent implements OnInit {
           this.cargarCarrito();
         }
       });
+    }
+  }
+  ngOnDestroy(): void {
+    if (this.descuentoListener) {
+      window.removeEventListener('descuentoGanado', this.descuentoListener);
     }
   }
 
@@ -177,6 +187,13 @@ export class NavComponent implements OnInit {
     if (usuarioGuardado) {
       this.usuario = JSON.parse(usuarioGuardado).usuario;
       this.usuario.nombre = this.usuario.nombre.toUpperCase();
+
+      if (this.tieneDescuentoDisponible() && !this.descuentoAplicado) {
+        this.calcularTotalConDescuento();
+      }
+    }
+    if (this.tieneDescuentoDisponible() && !this.descuentoAplicado) {
+      this.calcularTotalConDescuento();
     }
   }
 
