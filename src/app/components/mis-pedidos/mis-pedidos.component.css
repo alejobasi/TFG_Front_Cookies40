@@ -162,6 +162,21 @@
   color: #666;
 }
 
+/* Añadir al final del archivo */
+
+.precio-oferta {
+  color: #ff4aaa;
+  font-weight: bold;
+}
+
+.precio-original {
+  text-decoration: line-through;
+  color: #999;
+  font-size: 0.9em;
+  margin-right: 5px;
+  font-weight: normal;
+}
+
 .no-pedidos i {
   font-size: 4rem;
   color: #ff4aaa;

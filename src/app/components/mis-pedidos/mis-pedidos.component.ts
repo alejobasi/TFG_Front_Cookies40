@@ -31,57 +31,76 @@ export class MisPedidosComponent implements OnInit {
     this.cargando = true;
     const sesion = localStorage.getItem('sesion');
     if (sesion) {
-      const usuario = JSON.parse(sesion).usuario;
+      const sesionObj = JSON.parse(sesion);
+      const usuario = sesionObj.usuario;
       this.nombreUsuario = usuario.nombre;
+
+      const direccionesEntrega = usuario.datosEntrega || [];
+
+      this.productoService.getProductos().subscribe({
+        next: (productos) => {
+          this.productos = productos;
+
+          // Después cargamos los pedidos
+          this.pedidoService.getMisPedidos().subscribe({
+            next: (pedidos) => {
+              console.log('Pedidos obtenidos:', pedidos);
+              this.pedidos = pedidos.map((pedido) => {
+                const datosEntrega = direccionesEntrega.find(
+                  (dir: any) => dir.id === pedido.idDatosEntrega
+                );
+
+                return {
+                  ...pedido,
+                  expanded: false,
+                  datosEntrega: datosEntrega || null,
+                  productos: pedido.productos.map((pedidoProducto: any) => {
+                    const productoCompleto = this.productos.find(
+                      (p) => p.id === pedidoProducto.idProducto
+                    );
+
+                    // Determinar qué precio usar (oferta o normal)
+                    const precioAUsar =
+                      productoCompleto && productoCompleto.precioOferta
+                        ? productoCompleto.precioOferta
+                        : productoCompleto
+                        ? productoCompleto.precio
+                        : 0;
+
+                    return {
+                      ...pedidoProducto,
+                      nombre: productoCompleto
+                        ? productoCompleto.nombre
+                        : 'Producto no disponible',
+                      precio: productoCompleto ? productoCompleto.precio : 0,
+                      precioOferta: productoCompleto
+                        ? productoCompleto.precioOferta
+                        : null,
+                      imagen: productoCompleto
+                        ? productoCompleto.imagenUrl || productoCompleto.imagen
+                        : '',
+                      // Usar el precio correcto para el subtotal
+                      subtotal: precioAUsar * pedidoProducto.cantidad,
+                    };
+                  }),
+                };
+              });
+
+              console.log('Pedidos procesados:', this.pedidos);
+              this.cargando = false;
+            },
+            error: (error) => {
+              console.error('Error al obtener pedidos:', error);
+              this.cargando = false;
+            },
+          });
+        },
+        error: (error) => {
+          console.error('Error al obtener productos:', error);
+          this.cargando = false;
+        },
+      });
     }
-
-    // Primero cargamos todos los productos para tener la información completa
-    this.productoService.getProductos().subscribe({
-      next: (productos) => {
-        this.productos = productos;
-
-        // Después cargamos los pedidos
-        this.pedidoService.getMisPedidos().subscribe({
-          next: (pedidos) => {
-            console.log('Pedidos obtenidos:', pedidos);
-            this.pedidos = pedidos.map((pedido) => {
-              return {
-                ...pedido,
-                expanded: false,
-                productos: pedido.productos.map((pedidoProducto: any) => {
-                  const productoCompleto = this.productos.find(
-                    (p) => p.id === pedidoProducto.idProducto
-                  );
-                  console.log('Producto encontrado:', productoCompleto);
-                  return {
-                    ...pedidoProducto,
-                    nombre: productoCompleto
-                      ? productoCompleto.nombre
-                      : 'Producto no disponible',
-                    precio: productoCompleto ? productoCompleto.precio : 0,
-                    imagen: productoCompleto ? productoCompleto.imagenUrl : '',
-                    subtotal: productoCompleto
-                      ? productoCompleto.precio * pedidoProducto.cantidad
-                      : 0,
-                  };
-                }),
-              };
-            });
-
-            console.log('Pedidos procesados:', this.pedidos);
-            this.cargando = false;
-          },
-          error: (error) => {
-            console.error('Error al obtener pedidos:', error);
-            this.cargando = false;
-          },
-        });
-      },
-      error: (error) => {
-        console.error('Error al obtener productos:', error);
-        this.cargando = false;
-      },
-    });
   }
   togglePedido(pedido: any): void {
     pedido.expanded = !pedido.expanded;
@@ -136,26 +155,23 @@ export class MisPedidosComponent implements OnInit {
       doc.text(`Teléfono: ${pedido.datosEntrega.telefono}`, 20, 74);
     }
 
-    // Tabla de productos
     doc.setFontSize(14);
     doc.text('Productos:', 20, 90);
 
-    // Crear tabla de productos con autoTable
     const tableColumn = ['Producto', 'Cantidad', 'Precio', 'Subtotal'];
     const tableRows: any[] = [];
 
-    // Añadir productos a la tabla
     pedido.productos.forEach((producto: any) => {
+      const precioMostrar = producto.precioOferta || producto.precio;
       const productoData = [
         producto.nombre,
         producto.cantidad,
-        `${producto.precio.toFixed(2)} €`,
+        `${precioMostrar.toFixed(2)} €`,
         `${producto.subtotal.toFixed(2)} €`,
       ];
       tableRows.push(productoData);
     });
 
-    // Añadir fila de descuento si existe
     const footRows = [];
 
     if (pedido.descuento) {
@@ -168,10 +184,8 @@ export class MisPedidosComponent implements OnInit {
       ]);
     }
 
-    // Añadir fila de total
     footRows.push(['Total', '', '', `${pedido.total.toFixed(2)} €`]);
 
-    // Usar autoTable con las filas de pie actualizadas
     autoTable(doc, {
       head: [tableColumn],
       body: tableRows,
@@ -196,13 +210,11 @@ export class MisPedidosComponent implements OnInit {
       },
     });
 
-    // Obtén la posición final después de la tabla
     const finalY = (doc as any).lastAutoTable.finalY + 15;
     doc.text('Gracias por confiar en Cookies40', 105, finalY, {
       align: 'center',
     });
 
-    // Generar y descargar PDF
     doc.save(`Cookies40_Pedido_${pedido.id}.pdf`);
   }
 }

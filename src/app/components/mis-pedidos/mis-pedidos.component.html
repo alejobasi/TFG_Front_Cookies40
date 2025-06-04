@@ -94,14 +94,23 @@
                   </div>
                 </td>
                 <td class="text-center">{{ producto.cantidad }}</td>
-                <td class="text-end" *ngIf="!producto.precioOferta">
-                  {{ producto.precio | currency : "EUR" : "symbol" : "1.2-2" }}
-                </td>
-                <td class="text-end" *ngIf="producto.precioOferta">
-                  {{
-                    producto.precioOferta
-                      | currency : "EUR" : "symbol" : "1.2-2"
-                  }}
+                <!-- Reemplaza la parte de la tabla donde se muestra el precio -->
+
+                <td class="text-end">
+                  <span *ngIf="producto.precioOferta" class="precio-oferta">
+                    <span class="precio-original">{{
+                      producto.precio | currency : "EUR" : "symbol" : "1.2-2"
+                    }}</span>
+                    {{
+                      producto.precioOferta
+                        | currency : "EUR" : "symbol" : "1.2-2"
+                    }}
+                  </span>
+                  <span *ngIf="!producto.precioOferta">
+                    {{
+                      producto.precio | currency : "EUR" : "symbol" : "1.2-2"
+                    }}
+                  </span>
                 </td>
                 <td class="text-end">
                   {{
