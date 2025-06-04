@@ -12,6 +12,8 @@ import {
   FormsModule,
   ReactiveFormsModule,
   Validators,
+  AbstractControl,
+  ValidationErrors,
 } from '@angular/forms';
 import { UsuarioService } from '../../../services/usuario/usuario.service';
 import { CommonModule } from '@angular/common';
@@ -36,10 +38,68 @@ export class ModalEditarUsuarioComponent implements OnChanges {
   ngOnInit(): void {
     this.initForm();
   }
+
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['usuario'] && this.usuario) {
       this.initForm();
     }
+  }
+
+  // Validador condicional para contraseña
+  validarContrasenaFuerte(control: AbstractControl): ValidationErrors | null {
+    const value = control.value;
+
+    // Si está vacío, es válido (la contraseña es opcional)
+    if (!value) {
+      return null;
+    }
+
+    // Si tiene valor, verificamos los requisitos
+    const tieneMinuscula = /[a-z]/.test(value);
+    const tieneMayuscula = /[A-Z]/.test(value);
+    const tieneNumero = /[0-9]/.test(value);
+    const tieneLongitudMinima = value.length >= 8;
+
+    const contrasenaValida =
+      tieneMinuscula && tieneMayuscula && tieneNumero && tieneLongitudMinima;
+
+    return contrasenaValida
+      ? null
+      : {
+          contrasenaDebil: {
+            tieneMinuscula,
+            tieneMayuscula,
+            tieneNumero,
+            tieneLongitudMinima,
+          },
+        };
+  }
+
+  // Método para verificar los requisitos en la plantilla
+  verificarRequisito(campo: string, requisito: string): boolean {
+    const control = this.usuarioForm.get(campo);
+
+    // Si el campo está vacío, todos los requisitos están "cumplidos" (porque no aplicamos validación)
+    if (!control?.value) {
+      return true;
+    }
+
+    // Si no tiene errores de tipo contrasenaDebil, está cumplido
+    if (!control.errors || !control.errors['contrasenaDebil']) {
+      return true;
+    }
+
+    // Devuelve el estado del requisito específico
+    return control.errors['contrasenaDebil'][requisito];
+  }
+
+  // Verificar longitud mínima de forma separada
+  verificarLongitudMinima(campo: string): boolean {
+    const control = this.usuarioForm.get(campo);
+    if (!control?.value) {
+      return true;
+    }
+    return control.value.length >= 8;
   }
 
   initForm(): void {
@@ -49,10 +109,11 @@ export class ModalEditarUsuarioComponent implements OnChanges {
         { value: this.usuario.email, disabled: true },
         [Validators.required, Validators.email],
       ],
-      contrasena: [''],
+      contrasena: ['', [this.validarContrasenaFuerte.bind(this)]],
       rol: [{ value: this.usuario.rol.nombre, disabled: true }],
     });
   }
+
   cerrarModal(): void {
     const modal = document.getElementById('modalEditarUsuario');
     if (modal) {
@@ -60,6 +121,16 @@ export class ModalEditarUsuarioComponent implements OnChanges {
       modal.style.display = 'none';
       modal.setAttribute('aria-hidden', 'true');
       modal.removeAttribute('aria-modal');
+    }
+  }
+
+  // Ver contraseña (toggle)
+  verContrasena(): void {
+    const input = document.getElementById('contrasena') as HTMLInputElement;
+    if (input.type === 'password') {
+      input.type = 'text';
+    } else {
+      input.type = 'password';
     }
   }
 

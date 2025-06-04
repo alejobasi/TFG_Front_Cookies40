@@ -44,25 +44,78 @@
           </div>
           <div class="mb-3">
             <label for="contrasena" class="form-label">Contraseña:</label>
-            <input
-              id="contrasena"
-              type="text"
-              formControlName="contrasena"
-              class="form-control"
-              [class.is-invalid]="
-                usuarioForm.get('contrasena')?.invalid &&
-                usuarioForm.get('contrasena')?.touched
-              "
-            />
+            <div class="input-group">
+              <input
+                id="contrasena"
+                type="password"
+                formControlName="contrasena"
+                class="form-control"
+                [class.is-invalid]="
+                  usuarioForm.get('contrasena')?.invalid &&
+                  usuarioForm.get('contrasena')?.touched &&
+                  usuarioForm.get('contrasena')?.value
+                "
+              />
+              <div class="input-group-append">
+                <button
+                  type="button"
+                  class="btn btn-outline-secondary"
+                  (click)="verContrasena()"
+                >
+                  <i class="bi bi-eye"></i>
+                </button>
+              </div>
+            </div>
+
+            <!-- Requisitos de contraseña (solo se muestra si hay contenido) -->
+            <div
+              class="requisitos-password"
+              *ngIf="usuarioForm.get('contrasena')?.value"
+            >
+              <p class="requisitos-titulo">La contraseña debe tener:</p>
+              <ul>
+                <li
+                  [ngClass]="{
+                    cumplido: verificarLongitudMinima('contrasena')
+                  }"
+                >
+                  Al menos 8 caracteres
+                </li>
+                <li
+                  [ngClass]="{
+                    cumplido: verificarRequisito('contrasena', 'tieneMinuscula')
+                  }"
+                >
+                  Al menos una letra minúscula
+                </li>
+                <li
+                  [ngClass]="{
+                    cumplido: verificarRequisito('contrasena', 'tieneMayuscula')
+                  }"
+                >
+                  Al menos una letra mayúscula
+                </li>
+                <li
+                  [ngClass]="{
+                    cumplido: verificarRequisito('contrasena', 'tieneNumero')
+                  }"
+                >
+                  Al menos un número
+                </li>
+              </ul>
+            </div>
+
             <div
               class="invalid-feedback"
               *ngIf="
                 usuarioForm.get('contrasena')?.invalid &&
-                usuarioForm.get('contrasena')?.touched
+                usuarioForm.get('contrasena')?.touched &&
+                usuarioForm.get('contrasena')?.value
               "
             >
-              La contraseña no es valida.
+              La contraseña no cumple con los requisitos de seguridad.
             </div>
+
             <small class="form-text text-muted">
               Si quieres cambiar la contraseña, rellena este campo. Si no,
               déjalo vacío.
