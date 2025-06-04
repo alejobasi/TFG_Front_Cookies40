@@ -43,7 +43,7 @@ export class MisPedidosComponent implements OnInit {
         // Después cargamos los pedidos
         this.pedidoService.getMisPedidos().subscribe({
           next: (pedidos) => {
-            // Enriquecemos los pedidos con la información completa de los productos
+            console.log('Pedidos obtenidos:', pedidos);
             this.pedidos = pedidos.map((pedido) => {
               return {
                 ...pedido,
@@ -52,7 +52,7 @@ export class MisPedidosComponent implements OnInit {
                   const productoCompleto = this.productos.find(
                     (p) => p.id === pedidoProducto.idProducto
                   );
-
+                  console.log('Producto encontrado:', productoCompleto);
                   return {
                     ...pedidoProducto,
                     nombre: productoCompleto
